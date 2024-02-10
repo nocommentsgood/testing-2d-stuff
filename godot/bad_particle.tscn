@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://cuji0s4o21r2q"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_d3t2p"]
+particles_animation = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xrw7w"]
+particle_flag_disable_z = true
+emission_shape = 2
+emission_sphere_radius = 6.52
+orbit_velocity_min = -0.5
+orbit_velocity_max = 0.5
+radial_velocity_min = -4.0
+radial_velocity_max = -4.0
+gravity = Vector3(0, 0, 0)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_d3t2p")
+use_parent_material = true
+position = Vector2(150, 43)
+process_material = SubResource("ParticleProcessMaterial_xrw7w")
