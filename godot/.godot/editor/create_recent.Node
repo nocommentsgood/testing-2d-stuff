@@ -1,0 +1,9 @@
+Wolf
+Mage
+CollisionShape2D
+AnimatedSprite2D
+CharacterBody2D
+Node
+Main
+Area2D
+DirectionalLight2D
