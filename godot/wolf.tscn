@@ -384,7 +384,7 @@ animations = [{
 
 [node name="Node2D" type="Node2D"]
 
-[node name="wolf" type="CharacterBody2D" parent="."]
+[node name="wolf" type="Wolf" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="wolf"]
 
