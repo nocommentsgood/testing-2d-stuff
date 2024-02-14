@@ -1,0 +1,1 @@
+{"rustc":12738513403806206521,"features":"","target":0,"profile":0,"path":0,"deps":[[5735229413574923162,"build_script_build",false,3852451633973339223]],"local":[{"RerunIfChanged":{"output":"debug/build/godot-core-5b1269a045b697ce/output","paths":["build.rs"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}

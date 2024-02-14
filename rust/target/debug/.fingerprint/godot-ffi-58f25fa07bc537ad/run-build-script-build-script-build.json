@@ -1,0 +1,1 @@
+{"rustc":12738513403806206521,"features":"","target":0,"profile":0,"path":0,"deps":[[10578190141342732039,"build_script_build",false,17438006309660653514]],"local":[{"RerunIfChanged":{"output":"debug/build/godot-ffi-58f25fa07bc537ad/output","paths":["build.rs"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}
