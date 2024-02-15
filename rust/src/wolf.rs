@@ -46,18 +46,32 @@ impl ICharacterBody2D for Wolf {
 
             let animation;
 
-            if velocity.x != 0.0 {
-                animation = "run_down_left";
-                animated_sprite.set_flip_v(false);
-                animated_sprite.set_flip_h(velocity.x < 0.0)
-            } else {
+            // if velocity.x != 0.0 {
+            //     animation = "run_down_left";
+            //     //animated_sprite.set_flip_v(false);
+            //     animated_sprite.set_flip_h(velocity.x < 0.0)
+            // } else {
+            //     animation = "run_down_right";
+            //     // animated_sprite.set_flip_v(velocity.y > 0.0)
+            // }
+
+            // test
+            if velocity.x > 0.0 && velocity.y > 0.0 {
                 animation = "run_down_right";
-                // animated_sprite.set_flip_v(velocity.y > 0.0)
+            } else if velocity.x < 0.0 && velocity.y > 0.0 {
+                animation = "run_down_left";
+            } else if velocity.x < 0.0 && velocity.y < 0.0 {
+                animation = "run_up_left";
+            } else {
+                animation = "run_up_right";
             }
 
             animated_sprite.play_ex().name(animation.into()).done();
         } else {
-            animated_sprite.stop();
+            animated_sprite
+                .play_ex()
+                .name("idle_down_left".into())
+                .done();
         }
 
         let change = velocity * real::from_f64(delta);

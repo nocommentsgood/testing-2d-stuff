@@ -1,25 +1,54 @@
-[gd_scene load_steps=3 format=3 uid="uid://cuji0s4o21r2q"]
+[gd_scene load_steps=7 format=3 uid="uid://cuji0s4o21r2q"]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_d3t2p"]
-particles_animation = true
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = true
+[sub_resource type="Curve" id="Curve_370rj"]
+_data = [Vector2(0.0333333, 0.472527), 0.0, 0.0, 0, 0, Vector2(0.506667, 0.659341), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_0joiu"]
+curve = SubResource("Curve_370rj")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xrw7w"]
+particle_flag_rotate_y = true
 particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 1, 5)
 emission_shape = 2
-emission_sphere_radius = 6.52
+emission_sphere_radius = 40.0
 orbit_velocity_min = -0.5
 orbit_velocity_max = 0.5
-radial_velocity_min = -4.0
-radial_velocity_max = -4.0
+radial_velocity_min = -40.0
+radial_velocity_max = 1.0
 gravity = Vector3(0, 0, 0)
+scale_min = 3.0
+scale_max = 6.0
+scale_curve = SubResource("CurveTexture_0joiu")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_n5jbs"]
+
+[sub_resource type="Gradient" id="Gradient_0lcc0"]
+offsets = PackedFloat32Array(0, 0.688312)
+colors = PackedColorArray(1, 1, 1, 1, 0.089444, 0, 0.848174, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lqa22"]
+gradient = SubResource("Gradient_0lcc0")
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [node name="Node2D" type="Node2D"]
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-material = SubResource("CanvasItemMaterial_d3t2p")
-use_parent_material = true
-position = Vector2(150, 43)
 process_material = SubResource("ParticleProcessMaterial_xrw7w")
+texture = SubResource("PlaceholderTexture2D_n5jbs")
+trail_enabled = true
+trail_lifetime = 0.2
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.239216, 0.113725, 0.8, 1)
+range_layer_max = 3
+range_item_cull_mask = 5
+shadow_enabled = true
+shadow_filter = 2
+shadow_filter_smooth = 0.6
+shadow_item_cull_mask = 7
+texture = SubResource("GradientTexture2D_lqa22")
+texture_scale = 2.44
