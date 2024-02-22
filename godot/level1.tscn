@@ -333,6 +333,7 @@ physics_layer_0/collision_layer = 1
 sources/1 = SubResource("TileSetAtlasSource_6lbcr")
 
 [node name="Node2D" type="Node2D"]
+show_behind_parent = true
 
 [node name="TileMap" type="TileMap" parent="."]
 y_sort_enabled = true

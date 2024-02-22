@@ -1,3 +1,5 @@
+mod button;
+mod hud;
 mod mage;
 mod main_scene;
 mod wolf;
