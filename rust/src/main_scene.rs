@@ -1,4 +1,7 @@
-use godot::prelude::*;
+use godot::{
+    engine::{Button, CanvasLayer, CharacterBody2D},
+    prelude::*,
+};
 
 #[derive(GodotClass)]
 #[class(base=Node)]
@@ -10,5 +13,22 @@ struct Main {
 impl INode for Main {
     fn init(base: Base<Node>) -> Self {
         Self { base }
+    }
+}
+
+#[godot_api]
+impl Main {
+    #[func]
+    fn on_spell_button_clicked(&mut self) {
+        let mut button = self
+            .base_mut()
+            .get_node_as::<Button>("HUD/SpellContainer/GridContainer/Button");
+        let mage = self.base_mut().get_node_as::<CharacterBody2D>("Mage");
+
+        godot_print!("main connecting signal");
+        button.connect(
+            "spell_button_clicked".into(),
+            mage.callable("on_spell_button_clicked"),
+        );
     }
 }

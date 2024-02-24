@@ -8,7 +8,6 @@ use godot::{
 pub struct Mage {
     #[export]
     speed: real,
-    screen_size: Vector2,
     #[var]
     target: Vector2,
     base: Base<CharacterBody2D>,
@@ -19,7 +18,6 @@ impl ICharacterBody2D for Mage {
     fn init(base: Base<CharacterBody2D>) -> Self {
         Self {
             speed: 200.0,
-            screen_size: Vector2::ZERO,
             target: Vector2::ZERO,
             base,
         }
@@ -29,13 +27,9 @@ impl ICharacterBody2D for Mage {
         if event.is_action_pressed("click".into()) {
             self.target = self.base().get_global_mouse_position();
         }
-
-        if event.is_action_pressed("spell".into()) {
-            self.cast_spell();
-        }
     }
 
-    fn physics_process(&mut self, delta: f64) {
+    fn physics_process(&mut self, _delta: f64) {
         let velocity = self.base().get_position().direction_to(self.target) * self.speed;
         let mut animated_sprite = self
             .base_mut()
@@ -63,17 +57,15 @@ impl ICharacterBody2D for Mage {
 
     fn ready(&mut self) {
         let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
-        let s = effect.is_visible();
-        effect.set_visible(!s);
+        effect.set_visible(false);
     }
 }
 
 #[godot_api]
 impl Mage {
     #[func]
-    fn cast_spell(&mut self) {
-        let slot = self.base().connect("spell_button_clicked", callable)
+    fn cast_spell_action(&mut self, toggled: bool, spell_index: real) {
         let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
-        effect.set_visible(true);
+        effect.set_visible(toggled);
     }
 }
