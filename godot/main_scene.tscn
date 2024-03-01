@@ -21,14 +21,5 @@ transform = Transform2D(0.5, 0, 0, 0.5, 300, 400)
 [node name="Button2" parent="HUD/SpellContainer/GridContainer" index="1"]
 text = ""
 
-[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button" to="Mage" method="cast_spell_action"]
-[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button2" to="Mage" method="cast_spell_action"]
-[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button3" to="Mage" method="cast_spell_action"]
-[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button4" to="Mage" method="cast_spell_action"]
-[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button5" to="Mage" method="cast_spell_action"]
-[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button6" to="Mage" method="cast_spell_action"]
-[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button7" to="Mage" method="cast_spell_action"]
-[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button8" to="Mage" method="cast_spell_action"]
-
 [editable path="Mage"]
 [editable path="HUD"]

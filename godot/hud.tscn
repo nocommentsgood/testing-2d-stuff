@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b4oahhbwibo2s" path="res://icon.svg" id="1_xjw3g"]
 
-[node name="HUD" type="Hud"]
+[node name="HUD" type="CanvasLayer"]
 scale = Vector2(0.5, 0.5)
 transform = Transform2D(0.5, 0, 0, 0.5, 0, 0)
 
@@ -24,57 +24,49 @@ grow_horizontal = 2
 mouse_filter = 2
 columns = 4
 
-[node name="Button" type="SpellButton" parent="SpellContainer/GridContainer"]
-spell_slot_number = 1.0
+[node name="Button" type="Button" parent="SpellContainer/GridContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "1"
 icon = ExtResource("1_xjw3g")
 
-[node name="Button2" type="SpellButton" parent="SpellContainer/GridContainer"]
-spell_slot_number = 2.0
+[node name="Button2" type="Button" parent="SpellContainer/GridContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "2"
 icon = ExtResource("1_xjw3g")
 
-[node name="Button3" type="SpellButton" parent="SpellContainer/GridContainer"]
-spell_slot_number = 3.0
+[node name="Button3" type="Button" parent="SpellContainer/GridContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "2"
 icon = ExtResource("1_xjw3g")
 
-[node name="Button4" type="SpellButton" parent="SpellContainer/GridContainer"]
-spell_slot_number = 4.0
+[node name="Button4" type="Button" parent="SpellContainer/GridContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "2"
 icon = ExtResource("1_xjw3g")
 
-[node name="Button5" type="SpellButton" parent="SpellContainer/GridContainer"]
-spell_slot_number = 5.0
+[node name="Button5" type="Button" parent="SpellContainer/GridContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "2"
 icon = ExtResource("1_xjw3g")
 
-[node name="Button6" type="SpellButton" parent="SpellContainer/GridContainer"]
-spell_slot_number = 6.0
+[node name="Button6" type="Button" parent="SpellContainer/GridContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "2"
 icon = ExtResource("1_xjw3g")
 
-[node name="Button7" type="SpellButton" parent="SpellContainer/GridContainer"]
-spell_slot_number = 7.0
+[node name="Button7" type="Button" parent="SpellContainer/GridContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "2"
 icon = ExtResource("1_xjw3g")
 
-[node name="Button8" type="SpellButton" parent="SpellContainer/GridContainer"]
-spell_slot_number = 8.0
+[node name="Button8" type="Button" parent="SpellContainer/GridContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "2"

@@ -385,7 +385,7 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aexm3"]
 radius = 9.0
 
-[node name="Mage" type="Mage"]
+[node name="Mage" type="CharacterBody2D"]
 position = Vector2(3, 0)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
