@@ -19,7 +19,7 @@ impl IEditorPlugin for GlobalState {
     fn enter_tree(&mut self) {
         self.base_mut().add_autoload_singleton(
             GlobalState::PLAYER_VARS.into(),
-            GString::from("res://player_variables.tscn"),
+            GString::from("res://scenes/player_variables.tscn"),
         );
     }
 

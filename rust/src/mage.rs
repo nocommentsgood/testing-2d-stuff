@@ -70,17 +70,29 @@ impl ICharacterBody2D for Mage {
 #[godot_api]
 impl Mage {
     #[func]
-    fn cast_spell_action(&mut self, toggled: bool, _spell_index: real) {
+    pub fn cast_spell_action(&mut self, toggled: bool, _spell_index: real) {
         if toggled {
             self.state = CharacterState::CASTING_SPELL
         } else {
             self.state = CharacterState::DEFAULT
         }
+
         let mut auto = self
             .base()
             .get_node_as::<PlayerVariables>("/root/PlayerVars");
         auto.bind_mut().test_tree();
         let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
+
         effect.set_visible(toggled);
+        self.base_mut()
+            .emit_signal("player_spell_was_cast".into(), &[]);
+    }
+
+    #[signal]
+    fn player_spell_was_cast() {}
+
+    #[func]
+    fn spell_was_cancelled(&mut self) {
+        self.state = CharacterState::DEFAULT
     }
 }

@@ -40,7 +40,6 @@ impl ICharacterBody2D for FireballSpell {
 
     fn physics_process(&mut self, delta: f64) {
         let velocity = self.base().get_position().direction_to(self.target) * self.speed;
-        let mut animated_sprite = self.base_mut().get_node_as::<AnimatedSprite2D>("Fireball");
 
         self.base_mut().set_velocity(velocity);
 
