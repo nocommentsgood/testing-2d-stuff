@@ -1,0 +1,91 @@
+[gd_scene load_steps=12 format=3 uid="uid://c7d2kvygvo2h8"]
+
+[ext_resource type="Texture2D" uid="uid://bbeyrset5ws2y" path="res://Red Effect Bullet Impact Explosion 32x32.png" id="1_pkpsi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8dqdj"]
+atlas = ExtResource("1_pkpsi")
+region = Rect2(512, 384, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cruk8"]
+atlas = ExtResource("1_pkpsi")
+region = Rect2(544, 384, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fb5yb"]
+atlas = ExtResource("1_pkpsi")
+region = Rect2(576, 384, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3u2gn"]
+atlas = ExtResource("1_pkpsi")
+region = Rect2(608, 384, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f176m"]
+atlas = ExtResource("1_pkpsi")
+region = Rect2(352, 320, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rjim3"]
+atlas = ExtResource("1_pkpsi")
+region = Rect2(384, 320, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wv7j6"]
+atlas = ExtResource("1_pkpsi")
+region = Rect2(416, 320, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p354x"]
+atlas = ExtResource("1_pkpsi")
+region = Rect2(448, 320, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_latci"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8dqdj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cruk8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fb5yb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3u2gn")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"explosion",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f176m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rjim3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wv7j6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p354x")
+}],
+"loop": true,
+"name": &"moving",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8it0l"]
+radius = 100.0
+
+[node name="FireballSpell" type="FireballSpell"]
+position = Vector2(32, 32)
+
+[node name="Fireball" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_latci")
+animation = &"moving"
+frame = 1
+frame_progress = 0.717278
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8it0l")

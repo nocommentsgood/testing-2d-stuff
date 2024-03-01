@@ -1,0 +1,73 @@
+[gd_scene load_steps=2 format=3 uid="uid://jkxs4q1fojjs"]
+
+[ext_resource type="Texture2D" uid="uid://b4oahhbwibo2s" path="res://icon.svg" id="1_xjw3g"]
+
+[node name="HUD" type="CanvasLayer"]
+scale = Vector2(0.5, 0.5)
+transform = Transform2D(0.5, 0, 0, 0.5, 0, 0)
+
+[node name="SpellContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+
+[node name="GridContainer" type="GridContainer" parent="SpellContainer"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_right = 616.0
+offset_bottom = 284.0
+grow_horizontal = 2
+mouse_filter = 2
+columns = 4
+
+[node name="Button" type="Button" parent="SpellContainer/GridContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "1"
+icon = ExtResource("1_xjw3g")
+
+[node name="Button2" type="Button" parent="SpellContainer/GridContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "2"
+icon = ExtResource("1_xjw3g")
+
+[node name="Button3" type="Button" parent="SpellContainer/GridContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "2"
+icon = ExtResource("1_xjw3g")
+
+[node name="Button4" type="Button" parent="SpellContainer/GridContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "2"
+icon = ExtResource("1_xjw3g")
+
+[node name="Button5" type="Button" parent="SpellContainer/GridContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "2"
+icon = ExtResource("1_xjw3g")
+
+[node name="Button6" type="Button" parent="SpellContainer/GridContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "2"
+icon = ExtResource("1_xjw3g")
+
+[node name="Button7" type="Button" parent="SpellContainer/GridContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "2"
+icon = ExtResource("1_xjw3g")
+
+[node name="Button8" type="Button" parent="SpellContainer/GridContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "2"
+icon = ExtResource("1_xjw3g")

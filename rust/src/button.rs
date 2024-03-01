@@ -1,5 +1,5 @@
 use godot::{
-    engine::{Button, IButton, InputEvent},
+    engine::{Button, IButton},
     prelude::*,
 };
 
@@ -7,7 +7,7 @@ use godot::{
 #[class(base=Button)]
 struct SpellButton {
     #[export]
-    spell_slot_number: i16,
+    spell_slot_number: real,
     base: Base<Button>,
 }
 
@@ -15,21 +15,21 @@ struct SpellButton {
 impl IButton for SpellButton {
     fn init(base: Base<Button>) -> Self {
         Self {
-            spell_slot_number: 0,
+            spell_slot_number: 0.0,
             base,
         }
     }
 
-    fn gui_input(&mut self, input: Gd<InputEvent>) {
-        if input.is_action_pressed("click".into()) {
-            self.base_mut()
-                .emit_signal("spell_button_clicked".into(), &[]);
-        }
+    fn toggled(&mut self, toggled: bool) {
+        let toggled = toggled.to_variant();
+        let spell_index = self.get_spell_slot_number().to_variant();
+        self.base_mut()
+            .emit_signal("casting_spell".into(), &[toggled, spell_index]);
     }
 }
 
 #[godot_api]
 impl SpellButton {
     #[signal]
-    fn spell_button_clicked() {}
+    fn casting_spell(toggled: bool, spell_index: real);
 }

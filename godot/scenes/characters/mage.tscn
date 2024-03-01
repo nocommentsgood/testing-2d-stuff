@@ -1,7 +1,7 @@
 [gd_scene load_steps=53 format=3 uid="uid://djtals2pjvg6r"]
 
 [ext_resource type="Texture2D" uid="uid://3f6m078uy2u8" path="res://Mage-Sheet.png" id="1_cvhj6"]
-[ext_resource type="PackedScene" uid="uid://cuji0s4o21r2q" path="res://bad_particle.tscn" id="2_bbtih"]
+[ext_resource type="PackedScene" uid="uid://cuji0s4o21r2q" path="res://scenes/animations/spells/bad_particle.tscn" id="2_bbtih"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_boeb2"]
 atlas = ExtResource("1_cvhj6")

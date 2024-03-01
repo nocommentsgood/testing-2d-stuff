@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://4xxtq6dkuy0q"]
+
+[ext_resource type="PackedScene" uid="uid://dp4ikhd373jm4" path="res://scenes/world/level1.tscn" id="1_cd5yn"]
+[ext_resource type="PackedScene" uid="uid://dr3oxhbthejwy" path="res://scenes/characters/wolf.tscn" id="2_7icr0"]
+[ext_resource type="PackedScene" uid="uid://djtals2pjvg6r" path="res://scenes/characters/mage.tscn" id="3_52x63"]
+[ext_resource type="PackedScene" uid="uid://jkxs4q1fojjs" path="res://scenes/gui/hud.tscn" id="4_enr6b"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Level" parent="." instance=ExtResource("1_cd5yn")]
+
+[node name="Wolf" parent="." instance=ExtResource("2_7icr0")]
+
+[node name="Mage" parent="." instance=ExtResource("3_52x63")]
+position = Vector2(797, 400)
+
+[node name="HUD" parent="." instance=ExtResource("4_enr6b")]
+offset = Vector2(300, 400)
+transform = Transform2D(0.5, 0, 0, 0.5, 300, 400)
+
+[node name="Button2" parent="HUD/SpellContainer/GridContainer" index="1"]
+text = ""
+
+[editable path="Mage"]
+[editable path="HUD"]
