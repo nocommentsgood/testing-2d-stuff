@@ -5,7 +5,7 @@ use godot::{
 
 #[derive(GodotClass)]
 #[class(base=CharacterBody2D)]
-struct FireballSpell {
+pub struct FireballSpell {
     speed: real,
     target: Vector2,
     #[export]

@@ -71,6 +71,7 @@ impl ICharacterBody2D for Mage {
 impl Mage {
     #[func]
     pub fn cast_spell_action(&mut self, toggled: bool, _spell_index: real) {
+        godot_print!("casting spell mage");
         if toggled {
             self.state = CharacterState::CASTING_SPELL
         } else {
@@ -80,7 +81,7 @@ impl Mage {
         let mut auto = self
             .base()
             .get_node_as::<PlayerVariables>("/root/PlayerVars");
-        auto.bind_mut().test_tree();
+        auto.bind_mut().make_mage_cast();
         let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
 
         effect.set_visible(toggled);

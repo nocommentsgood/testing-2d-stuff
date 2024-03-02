@@ -24,7 +24,7 @@ grow_horizontal = 2
 mouse_filter = 2
 columns = 4
 
-[node name="Button" type="Button" parent="SpellContainer/GridContainer"]
+[node name="Button" type="SpellButton" parent="SpellContainer/GridContainer"]
 layout_mode = 2
 toggle_mode = true
 text = "1"
