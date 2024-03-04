@@ -31,6 +31,8 @@ impl ICharacterBody2D for Mage {
         if event.is_action_pressed("click".into()) {
             self.target = self.base().get_global_mouse_position();
         }
+        let mut viewport = self.base().get_viewport().unwrap();
+        viewport.set_input_as_handled();
     }
 
     fn physics_process(&mut self, _delta: f64) {
@@ -61,32 +63,40 @@ impl ICharacterBody2D for Mage {
         }
     }
 
-    fn ready(&mut self) {
-        let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
-        effect.set_visible(false);
-    }
+    // fn ready(&mut self) {
+    //     let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
+    //     effect.set_visible(false);
+    // }
 }
 
 #[godot_api]
 impl Mage {
     #[func]
     pub fn cast_spell_action(&mut self, toggled: bool, _spell_index: real) {
-        godot_print!("casting spell mage");
         if toggled {
-            self.state = CharacterState::CASTING_SPELL
+            self.state = CharacterState::CASTING_SPELL;
+            let mut auto = self
+                .base()
+                .get_node_as::<PlayerVariables>("/root/PlayerVars");
+
+            auto.bind_mut().cast_player_spell();
+            self.base_mut()
+                .emit_signal("player_spell_was_cast".into(), &[]);
         } else {
             self.state = CharacterState::DEFAULT
         }
 
-        let mut auto = self
-            .base()
-            .get_node_as::<PlayerVariables>("/root/PlayerVars");
-        auto.bind_mut().make_mage_cast();
-        let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
-
-        effect.set_visible(toggled);
-        self.base_mut()
-            .emit_signal("player_spell_was_cast".into(), &[]);
+        // let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
+        // effect.set_visible(toggled);
+        // let mut auto = self
+        //     .base()
+        //     .get_node_as::<PlayerVariables>("/root/PlayerVars");
+        // let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
+        //
+        // auto.bind_mut().cast_player_spell();
+        // effect.set_visible(toggled);
+        // self.base_mut()
+        //     .emit_signal("player_spell_was_cast".into(), &[]);
     }
 
     #[signal]

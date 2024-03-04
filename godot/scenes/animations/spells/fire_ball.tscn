@@ -52,7 +52,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": true,
+"loop": false,
 "name": &"explosion",
 "speed": 5.0
 }, {
@@ -78,14 +78,15 @@ animations = [{
 radius = 100.0
 
 [node name="FireballSpell" type="FireballSpell"]
-position = Vector2(32, 32)
+collision_mask = 7
+motion_mode = 1
 
 [node name="Fireball" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_latci")
-animation = &"moving"
-frame = 1
-frame_progress = 0.717278
+animation = &"explosion"
+frame = 4
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_8it0l")
