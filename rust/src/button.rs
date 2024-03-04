@@ -23,6 +23,7 @@ impl IButton for SpellButton {
     fn toggled(&mut self, toggled: bool) {
         let toggled = toggled.to_variant();
         let spell_index = self.get_spell_slot_number().to_variant();
+        self.base_mut().accept_event();
         self.base_mut()
             .emit_signal("casting_spell".into(), &[toggled, spell_index]);
     }

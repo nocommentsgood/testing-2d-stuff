@@ -17,18 +17,13 @@ pub struct PlayerVariables {
 
 #[godot_api]
 impl PlayerVariables {
-    pub fn test_tree(&mut self) {
-        let tree = self.base().get_tree().unwrap();
-        let spells = tree.get_root().unwrap();
-        godot_print!("from autoload");
-    }
-
-    pub fn make_mage_cast(&mut self) {
-        let mut fire = self.fire_scene.instantiate_as::<FireballSpell>();
+    pub fn cast_player_spell(&mut self) {
         let root = self.base().get_tree().unwrap().get_root().unwrap();
-        godot_print!("{}", root.get_children());
-        let mut mage = root.get_node_as::<Mage>("Main/Mage");
-        mage.add_child(fire.clone().upcast());
+        let mut fire = self.fire_scene.instantiate_as::<FireballSpell>();
+        let mage = root.get_node_as::<Mage>("Main/Mage");
+        let mut main = root.get_node_as::<Node2D>("Main");
+        fire.set_global_position(mage.get_position());
+        main.add_child(fire.clone().upcast());
     }
 }
 
