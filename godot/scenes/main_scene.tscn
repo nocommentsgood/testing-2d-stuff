@@ -1,21 +1,53 @@
-[gd_scene load_steps=4 format=3 uid="uid://4xxtq6dkuy0q"]
+[gd_scene load_steps=6 format=3 uid="uid://4xxtq6dkuy0q"]
 
 [ext_resource type="PackedScene" uid="uid://dp4ikhd373jm4" path="res://scenes/world/level1.tscn" id="1_cd5yn"]
+[ext_resource type="PackedScene" uid="uid://cvv2wb5p1ih3p" path="res://level_2.tscn" id="2_2hrq0"]
 [ext_resource type="PackedScene" uid="uid://djtals2pjvg6r" path="res://scenes/characters/mage.tscn" id="3_52x63"]
 [ext_resource type="PackedScene" uid="uid://jkxs4q1fojjs" path="res://scenes/gui/hud.tscn" id="4_enr6b"]
+
+[sub_resource type="Environment" id="Environment_1sbv5"]
+background_mode = 3
+ambient_light_color = Color(0.803922, 0, 0, 1)
+ambient_light_energy = 10.23
+tonemap_exposure = 1.09
+ssao_radius = 7.24
+ssao_intensity = 6.4
+glow_levels/1 = 5.0
+glow_levels/2 = 2.55
+glow_levels/3 = 6.91
+glow_levels/4 = 2.82
+glow_strength = 2.0
+glow_blend_mode = 1
+fog_light_energy = 2.14
+fog_sun_scatter = 0.09
+volumetric_fog_density = 0.0555
+adjustment_enabled = true
+adjustment_brightness = 0.56
 
 [node name="Main" type="Node2D"]
 
 [node name="Level" parent="." instance=ExtResource("1_cd5yn")]
+visible = false
+
+[node name="Node2D" parent="." instance=ExtResource("2_2hrq0")]
 
 [node name="Mage" parent="." instance=ExtResource("3_52x63")]
 
 [node name="HUD" parent="." instance=ExtResource("4_enr6b")]
-offset = Vector2(300, 400)
-transform = Transform2D(0.5, 0, 0, 0.5, 300, 400)
+offset = Vector2(810, 900)
+transform = Transform2D(0.5, 0, 0, 0.5, 810, 900)
 
 [node name="Button2" parent="HUD/SpellContainer/GridContainer" index="1"]
 text = ""
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1sbv5")
+
+[node name="Camera2D" type="PlayerCamera" parent="."]
+position = Vector2(888, 640)
+zoom = Vector2(3, 3)
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
 
 [connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button" to="Mage" method="cast_spell_action"]
 

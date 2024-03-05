@@ -62,11 +62,6 @@ impl ICharacterBody2D for Mage {
             animated_sprite.play_ex().name(animation.into()).done();
         }
     }
-
-    // fn ready(&mut self) {
-    //     let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
-    //     effect.set_visible(false);
-    // }
 }
 
 #[godot_api]
@@ -85,18 +80,6 @@ impl Mage {
         } else {
             self.state = CharacterState::DEFAULT
         }
-
-        // let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
-        // effect.set_visible(toggled);
-        // let mut auto = self
-        //     .base()
-        //     .get_node_as::<PlayerVariables>("/root/PlayerVars");
-        // let mut effect = self.base_mut().get_node_as::<Node2D>("Spell");
-        //
-        // auto.bind_mut().cast_player_spell();
-        // effect.set_visible(toggled);
-        // self.base_mut()
-        //     .emit_signal("player_spell_was_cast".into(), &[]);
     }
 
     #[signal]
