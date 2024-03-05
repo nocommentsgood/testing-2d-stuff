@@ -3,7 +3,7 @@ use godot::{
     prelude::*,
 };
 
-use crate::{mage::Mage, spells::fireball::FireballSpell};
+use crate::{mage::Mage, player_char_enums::CharacterState, spells::fireball::FireballSpell};
 
 #[derive(GodotClass)]
 #[class(init, base=Node)]
