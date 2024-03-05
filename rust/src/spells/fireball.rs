@@ -1,5 +1,10 @@
+use std::ops::Deref;
+
 use godot::{
-    engine::{AnimatedSprite2D, CharacterBody2D, IAnimatedSprite2D, ICharacterBody2D, InputEvent},
+    engine::{
+        AnimatedSprite2D, CharacterBody2D, IAnimatedSprite2D, ICharacterBody2D, InputEvent,
+        InputEventMouse,
+    },
     prelude::*,
 };
 
@@ -44,10 +49,11 @@ impl ICharacterBody2D for FireballSpell {
     fn unhandled_input(&mut self, input: Gd<InputEvent>) {
         if input.is_action_pressed("click".into()) {
             self.target = self.base().get_global_mouse_position();
-            self.velocity = self.base().get_position().direction_to(self.target) * self.speed;
-            self.distance_to_travel = self.base().get_position().distance_to(self.target);
+            self.velocity =
+                self.base().get_global_position().direction_to(self.target) * self.speed;
+            self.distance_to_travel = self.base().get_global_position().distance_to(self.target);
 
-            let distance = self.base().get_position().distance_to(self.target);
+            let distance = self.base().get_global_position().distance_to(self.target);
             let mut viewport = self.base().get_viewport().unwrap();
 
             if distance > self.max_distance {
@@ -63,7 +69,7 @@ impl ICharacterBody2D for FireballSpell {
     fn physics_process(&mut self, _delta: f64) {
         let velocity = self.velocity;
         let target = self.target;
-        let distance = self.base().get_position().distance_to(self.target);
+        let distance = self.base().get_global_position().distance_to(self.target);
         let mut timer = self
             .base()
             .get_tree()
@@ -98,6 +104,7 @@ impl FireballSpell {
 
     #[func]
     fn animate_explosion(&mut self) {
+        self.base_mut().set_physics_process(false);
         let mut anim = self.base().get_node_as::<AnimatedSprite2D>("Fireball");
         anim.set_animation("explosion".into());
         anim.play();
