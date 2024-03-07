@@ -78,13 +78,15 @@ impl IArea2D for TestSpell {
 
 #[godot_api]
 impl TestSpell {
+    #[signal]
+    fn spell_hit_players(bodies: Array<Gd<Node2D>>);
+
     #[func]
     fn get_colliding_bodies(&mut self) {
         let bodies = self.base().get_overlapping_bodies();
-        let areas = self.base().get_overlapping_areas();
         godot_print!("bodies: {}", bodies);
-        godot_print!("areas: {}", areas);
     }
+
     #[func]
     fn on_explosion_anim_finished(&mut self) {
         self.base_mut().call_deferred("free".into(), &[]);

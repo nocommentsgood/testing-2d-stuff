@@ -82,6 +82,22 @@ impl Mage {
         }
     }
 
+    #[func]
+    pub fn cast_test_spell(&mut self, toggled: bool, _spell_index: real) {
+        if toggled {
+            self.state = CharacterState::CASTING_SPELL;
+            let mut auto = self
+                .base()
+                .get_node_as::<PlayerVariables>("/root/PlayerVars");
+
+            auto.bind_mut().cast_test_spell();
+            self.base_mut()
+                .emit_signal("player_spell_was_cast".into(), &[]);
+        } else {
+            self.state = CharacterState::DEFAULT
+        }
+    }
+
     #[signal]
     fn player_spell_was_cast() {}
 

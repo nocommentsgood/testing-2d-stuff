@@ -1,2 +1,2 @@
 pub mod fireball;
-mod test_spell;
+pub mod test_spell;

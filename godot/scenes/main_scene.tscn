@@ -53,7 +53,11 @@ position_smoothing_speed = 10.0
 [node name="wolf" parent="." instance=ExtResource("5_63ur0")]
 position = Vector2(813, 552)
 
+[node name="wolf2" parent="." instance=ExtResource("5_63ur0")]
+position = Vector2(814, 582)
+
 [connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button" to="Mage" method="cast_spell_action"]
+[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button2" to="Mage" method="cast_test_spell"]
 
 [editable path="Mage"]
 [editable path="HUD"]
