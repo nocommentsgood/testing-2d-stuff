@@ -1,5 +1,10 @@
+use std::ops::Deref;
+
 use godot::{
-    engine::{AnimatedSprite2D, CharacterBody2D, IAnimatedSprite2D, ICharacterBody2D, InputEvent},
+    engine::{
+        AnimatedSprite2D, CharacterBody2D, IAnimatedSprite2D, ICharacterBody2D, InputEvent,
+        InputEventMouse,
+    },
     prelude::*,
 };
 
@@ -101,6 +106,7 @@ impl FireballSpell {
 
     #[func]
     fn animate_explosion(&mut self) {
+        self.base_mut().set_physics_process(false);
         let mut anim = self.base().get_node_as::<AnimatedSprite2D>("Fireball");
         anim.set_animation("explosion".into());
         anim.play();

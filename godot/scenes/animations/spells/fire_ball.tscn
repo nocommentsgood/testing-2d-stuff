@@ -89,3 +89,4 @@ animation = &"moving"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_8it0l")
+debug_color = Color(0.752941, 0, 0.0470588, 0.419608)
