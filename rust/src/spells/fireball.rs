@@ -13,6 +13,7 @@ use godot::{
 pub struct FireballSpell {
     #[var]
     speed: real,
+    #[var]
     target: Vector2,
     max_distance: real,
     has_travelled: bool,
@@ -40,6 +41,7 @@ impl ICharacterBody2D for FireballSpell {
     }
 
     fn ready(&mut self) {
+        self.target = self.base().get_position();
         self.base_mut().set_physics_process(false);
         let mut anim = self.base_mut().get_node_as::<AnimatedSprite2D>("Fireball");
         anim.set_animation("moving".into());
@@ -48,17 +50,15 @@ impl ICharacterBody2D for FireballSpell {
 
     fn unhandled_input(&mut self, input: Gd<InputEvent>) {
         if input.is_action_pressed("click".into()) {
-            self.target = self.base().get_global_mouse_position();
-            self.velocity =
-                self.base().get_global_position().direction_to(self.target) * self.speed;
-            self.distance_to_travel = self.base().get_global_position().distance_to(self.target);
-
-            let distance = self.base().get_global_position().distance_to(self.target);
+            let target = self.base().get_global_mouse_position();
+            self.target = target;
+            let distance = self.base().get_position().distance_to(self.target);
             let mut viewport = self.base().get_viewport().unwrap();
 
             if distance > self.max_distance {
                 godot_print!("CANNOT CAST THAT FAR");
             } else {
+                self.base_mut().look_at(target);
                 self.base_mut().set_process_unhandled_input(false);
                 self.base_mut().set_physics_process(true);
                 viewport.set_input_as_handled();
@@ -67,9 +67,12 @@ impl ICharacterBody2D for FireballSpell {
     }
 
     fn physics_process(&mut self, _delta: f64) {
-        let velocity = self.velocity;
         let target = self.target;
-        let distance = self.base().get_global_position().distance_to(self.target);
+        let distance = self.base().get_position().distance_to(self.target);
+
+        let position = self.base().get_global_position();
+        let velocity = position.direction_to(target) * self.speed;
+
         let mut timer = self
             .base()
             .get_tree()
@@ -81,10 +84,9 @@ impl ICharacterBody2D for FireballSpell {
         // this continuously tries to connect timer to callable every physics frame
         // works but sloppy
         timer.connect("timeout".into(), self.base().callable("animate_explosion"));
-        self.base_mut().set_velocity(velocity);
 
+        self.base_mut().set_velocity(velocity);
         if distance > 10.0 && distance < self.max_distance {
-            self.base_mut().look_at(target);
             self.base_mut().move_and_slide();
         }
     }
