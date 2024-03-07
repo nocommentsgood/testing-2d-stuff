@@ -44,7 +44,7 @@ text = ""
 environment = SubResource("Environment_1sbv5")
 
 [node name="Camera2D" type="PlayerCamera" parent="."]
-position = Vector2(888, 640)
+position = Vector2(338, 197)
 zoom = Vector2(3, 3)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0

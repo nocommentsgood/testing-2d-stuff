@@ -30,22 +30,17 @@ impl ICamera2D for PlayerCamera {
 
         // Note: exact=false by default, in Rust we have to provide it explicitly
         let input = Input::singleton();
-        godot_print!("iput is: {}", input);
         if input.is_action_pressed("camera_right".into()) {
             velocity += Vector2::RIGHT;
-            godot_print!("right");
         }
         if input.is_action_pressed("camera_left".into()) {
             velocity += Vector2::LEFT;
-            godot_print!("left");
         }
         if input.is_action_pressed("camera_down".into()) {
             velocity += Vector2::DOWN;
-            godot_print!("down");
         }
         if input.is_action_pressed("camera_up".into()) {
             velocity += Vector2::UP;
-            godot_print!("up");
         }
 
         if velocity.length() > 0.0 {
@@ -54,12 +49,10 @@ impl ICamera2D for PlayerCamera {
 
         let change = velocity * real::from_f64(delta);
         let position = self.base().get_global_position() + change;
-        godot_print!("glob pos: {}", position);
         let position = Vector2::new(
             position.x.clamp(0.0, self.screen_size.x),
             position.y.clamp(0.0, self.screen_size.y),
         );
-        godot_print!("new pos: {}", position);
         self.base_mut().set_global_position(position);
     }
 }
