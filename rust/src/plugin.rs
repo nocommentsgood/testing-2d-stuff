@@ -12,6 +12,7 @@ pub struct GlobalState {
 #[godot_api]
 impl GlobalState {
     const PLAYER_VARS: &'static str = "PlayerVars";
+    const ACTION_LOADER: &'static str = "SkillLoader";
 }
 
 #[godot_api]
@@ -20,6 +21,10 @@ impl IEditorPlugin for GlobalState {
         self.base_mut().add_autoload_singleton(
             GlobalState::PLAYER_VARS.into(),
             GString::from("res://scenes/player_variables.tscn"),
+        );
+        self.base_mut().add_autoload_singleton(
+            GlobalState::ACTION_LOADER.into(),
+            GString::from("res://singletons/action_loader.tscn"),
         );
     }
 
