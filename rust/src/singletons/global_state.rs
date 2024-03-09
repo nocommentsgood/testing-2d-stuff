@@ -14,6 +14,7 @@ pub struct PlayerVariables {
     #[init(default = 1.0)]
     this: real,
     fire_scene: Gd<PackedScene>,
+    test_spell: Gd<PackedScene>,
     base: Base<Node>,
 }
 
@@ -43,5 +44,6 @@ impl PlayerVariables {
 impl INode for PlayerVariables {
     fn ready(&mut self) {
         self.fire_scene = load("res://scenes/animations/spells/fire_ball.tscn");
+        self.test_spell = load("res://scenes/animations/spells/test_spell.tscn");
     }
 }
