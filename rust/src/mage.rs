@@ -1,9 +1,11 @@
+use crate::{
+    enums::player_char_enums::character_control_state_machine::CharacterState,
+    singletons::global_state::PlayerVariables,
+};
 use godot::{
     engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, InputEvent},
     prelude::*,
 };
-
-use crate::{global_state::PlayerVariables, player_char_enums::CharacterState};
 
 #[derive(GodotClass)]
 #[class(base=CharacterBody2D)]

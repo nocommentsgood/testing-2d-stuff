@@ -3,8 +3,6 @@ use godot::{
     prelude::*,
 };
 
-use crate::global_state::PlayerVariables;
-
 #[derive(GodotClass)]
 #[class(base=Node)]
 struct Main {
