@@ -5,8 +5,11 @@ use godot::{
         AnimatedSprite2D, CharacterBody2D, IAnimatedSprite2D, ICharacterBody2D, InputEvent,
         InputEventMouse,
     },
+    obj::bounds::implement_godot_bounds,
     prelude::*,
 };
+
+use super::my_spell::Spell;
 
 #[derive(GodotClass)]
 #[class(base=CharacterBody2D)]
@@ -91,6 +94,8 @@ impl ICharacterBody2D for FireballSpell {
         }
     }
 }
+
+impl Spell for FireballSpell {}
 
 #[godot_api]
 impl FireballSpell {

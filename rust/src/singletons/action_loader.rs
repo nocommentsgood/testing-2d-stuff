@@ -1,6 +1,6 @@
 use godot::prelude::*;
 
-use crate::enums::player_char_enums::skills::PlayerSkills;
+use crate::{enums::player_char_enums::skills::PlayerSkills, spells::fireball::FireballSpell};
 
 #[derive(GodotClass)]
 #[class(init, base=Node)]
@@ -17,11 +17,13 @@ impl INode for SkillLoader {
 
 #[godot_api]
 impl SkillLoader {
-    fn load_skill(skill: PlayerSkills) -> Option<Gd<PackedScene>> {
+    pub fn instantiate_skill(pack: Option<Gd<PackedScene>>, skill: PlayerSkills) {
         match skill {
-            PlayerSkills::FIREBALL => Some(load("res://animations/spells/fire_ball.tscn")),
-            PlayerSkills::TEST_SPELL => Some(load("res://animations/spells/test_spell.tscn")),
-            _ => None,
+            PlayerSkills::FIREBALL => {
+                if let Some(scene) = pack {
+                    let s = scene.instantiate_as::<FireballSpell>();
+                }
+            }
         }
     }
 }
