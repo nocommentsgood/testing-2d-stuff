@@ -7,7 +7,7 @@ use godot::{
 #[class(base=Button)]
 struct SpellButton {
     #[export]
-    spell_slot_number: real,
+    spell_slot_number: i16,
     base: Base<Button>,
 }
 
@@ -15,7 +15,7 @@ struct SpellButton {
 impl IButton for SpellButton {
     fn init(base: Base<Button>) -> Self {
         Self {
-            spell_slot_number: 0.0,
+            spell_slot_number: 0,
             base,
         }
     }
@@ -32,5 +32,5 @@ impl IButton for SpellButton {
 #[godot_api]
 impl SpellButton {
     #[signal]
-    fn casting_spell(toggled: bool, spell_index: real);
+    fn casting_spell(toggled: bool, spell_index: i16);
 }

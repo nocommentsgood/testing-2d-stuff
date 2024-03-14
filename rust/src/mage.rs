@@ -1,6 +1,10 @@
+use std::collections::HashMap;
+
 use crate::{
-    enums::player_char_enums::character_control_state_machine::CharacterState,
-    singletons::global_state::PlayerVariables,
+    enums::player_char_enums::{
+        character_control_state_machine::CharacterState, skills::PlayerSkills,
+    },
+    singletons::{action_loader::SkillLoader, character_variables::PlayerVariables},
 };
 use godot::{
     engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, InputEvent},
@@ -69,39 +73,33 @@ impl ICharacterBody2D for Mage {
 #[godot_api]
 impl Mage {
     #[func]
-    pub fn cast_spell_action(&mut self, toggled: bool, _spell_index: real) {
-        if toggled {
-            self.state = CharacterState::CASTING_SPELL;
-            let mut auto = self
-                .base()
-                .get_node_as::<PlayerVariables>("/root/PlayerVars");
-
-            auto.bind_mut().cast_player_spell();
-            self.base_mut()
-                .emit_signal("player_spell_was_cast".into(), &[]);
-        } else {
-            self.state = CharacterState::DEFAULT
-        }
+    fn on_spellbutton_pressed(&mut self, toggled: bool, spell_index: i16) {
+        self.cast_spell_action(toggled, spell_index);
     }
 
     #[func]
-    pub fn cast_test_spell(&mut self, toggled: bool, _spell_index: real) {
+    pub fn cast_spell_action(&mut self, toggled: bool, spell_index: i16) {
         if toggled {
             self.state = CharacterState::CASTING_SPELL;
-            let mut auto = self
+            let player_vars = self
                 .base()
                 .get_node_as::<PlayerVariables>("/root/PlayerVars");
+            let char_state = player_vars.bind();
+            let skill = char_state.active_skills.get(spell_index).unwrap();
 
-            auto.bind_mut().cast_test_spell();
-            self.base_mut()
-                .emit_signal("player_spell_was_cast".into(), &[]);
+            let path = self.base().get_path();
+
+            self.base_mut().emit_signal(
+                "player_spell_was_cast".into(),
+                &[path.to_variant(), skill.to_variant()],
+            );
         } else {
             self.state = CharacterState::DEFAULT
         }
     }
 
     #[signal]
-    fn player_spell_was_cast() {}
+    pub fn player_spell_was_cast(&self, path: NodePath, skill: PlayerSkills);
 
     #[func]
     fn spell_was_cancelled(&mut self) {
