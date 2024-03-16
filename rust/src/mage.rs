@@ -81,44 +81,22 @@ impl Mage {
     }
 
     #[func]
-    pub fn cast_spell_action(&mut self, toggled: bool, spell_index: i16) {
+    pub fn cast_spell_action(&mut self, toggled: bool, skill_index: i16) {
         if toggled {
             self.state = CharacterState::CASTING_SPELL;
-            let player_vars = self
-                .base()
-                .get_node_as::<PlayerVariables>("/root/PlayerVars");
-            let char_state = player_vars.bind();
-            let skill = char_state.active_skills.get(spell_index).unwrap();
-
             let path = self.base().get_path();
 
             self.base_mut().emit_signal(
-                "player_spell_was_cast".into(),
-                &[path.to_variant(), skill.to_variant()],
+                "player_requests_skill_action".into(),
+                &[skill_index.to_variant(), path.to_variant()],
             );
-            godot_print!("emitted spell signal");
         } else {
             self.state = CharacterState::DEFAULT
         }
     }
 
-    // #[func]
-    // fn connect_mage(&mut self) {
-    //     let tree = self.base().get_tree().unwrap();
-    //     let root = tree.get_root().unwrap();
-    //     // let manager = root.get_node_as::<SkillLoader>("SkillLoader");
-    //     let manager = root.get_node_as::<ActionManager>("ActionStateManager");
-    //
-    //     let call = manager
-    //         .bind()
-    //         .base()
-    //         .callable(StringName::from("on_player_skill_requested"));
-    //     self.base_mut()
-    //         .connect("player_spell_was_cast".into(), call);
-    // }
-
     #[signal]
-    fn player_spell_was_cast(path: NodePath, skill: PlayerSkills);
+    fn player_requests_skill_action(skill_index: i16, player_char_path: NodePath);
 
     #[func]
     fn spell_was_cancelled(&mut self) {
