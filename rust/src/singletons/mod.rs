@@ -1,2 +1,3 @@
 pub mod action_loader;
-pub mod global_state;
+pub mod action_manager;
+pub mod character_variables;

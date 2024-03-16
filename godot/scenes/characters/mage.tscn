@@ -384,7 +384,7 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aexm3"]
 radius = 9.0
 
-[node name="Mage" type="Mage"]
+[node name="Mage" type="Mage" groups=["playercharacters"]]
 collision_layer = 7
 collision_mask = 7
 

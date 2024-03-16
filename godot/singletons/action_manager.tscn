@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dskfuegu6oses"]
+
+[node name="ActionManager" type="ActionManager"]
+
+[node name="SkillLoader" type="SkillLoader" parent="."]

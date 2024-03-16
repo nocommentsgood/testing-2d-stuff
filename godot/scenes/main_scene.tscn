@@ -38,7 +38,11 @@ visible = false
 offset = Vector2(810, 900)
 transform = Transform2D(0.5, 0, 0, 0.5, 810, 900)
 
+[node name="Button" parent="HUD/SpellContainer/GridContainer" index="0"]
+spell_slot_number = 1
+
 [node name="Button2" parent="HUD/SpellContainer/GridContainer" index="1"]
+spell_slot_number = 2
 text = ""
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -56,8 +60,8 @@ position = Vector2(813, 552)
 [node name="wolf2" parent="." instance=ExtResource("5_63ur0")]
 position = Vector2(814, 582)
 
-[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button" to="Mage" method="cast_spell_action"]
-[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button2" to="Mage" method="cast_test_spell"]
+[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button" to="Mage" method="on_spellbutton_pressed"]
+[connection signal="casting_spell" from="HUD/SpellContainer/GridContainer/Button2" to="Mage" method="on_spellbutton_pressed"]
 
 [editable path="Mage"]
 [editable path="HUD"]
