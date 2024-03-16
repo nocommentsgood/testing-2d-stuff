@@ -1,10 +1,13 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, default};
 
 use crate::{
     enums::player_char_enums::{
         character_control_state_machine::CharacterState, skills::PlayerSkills,
     },
-    singletons::{action_loader::SkillLoader, character_variables::PlayerVariables},
+    singletons::{
+        action_loader::SkillLoader, action_manager::ActionManager,
+        character_variables::PlayerVariables,
+    },
 };
 use godot::{
     engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, InputEvent},
@@ -93,13 +96,29 @@ impl Mage {
                 "player_spell_was_cast".into(),
                 &[path.to_variant(), skill.to_variant()],
             );
+            godot_print!("emitted spell signal");
         } else {
             self.state = CharacterState::DEFAULT
         }
     }
 
+    // #[func]
+    // fn connect_mage(&mut self) {
+    //     let tree = self.base().get_tree().unwrap();
+    //     let root = tree.get_root().unwrap();
+    //     // let manager = root.get_node_as::<SkillLoader>("SkillLoader");
+    //     let manager = root.get_node_as::<ActionManager>("ActionStateManager");
+    //
+    //     let call = manager
+    //         .bind()
+    //         .base()
+    //         .callable(StringName::from("on_player_skill_requested"));
+    //     self.base_mut()
+    //         .connect("player_spell_was_cast".into(), call);
+    // }
+
     #[signal]
-    pub fn player_spell_was_cast(&self, path: NodePath, skill: PlayerSkills);
+    fn player_spell_was_cast(path: NodePath, skill: PlayerSkills);
 
     #[func]
     fn spell_was_cancelled(&mut self) {

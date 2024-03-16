@@ -9,12 +9,16 @@ use crate::{
 #[derive(GodotClass)]
 #[class(init, base=Node)]
 pub struct SkillLoader {
+    #[export]
+    path: NodePath,
     base: Base<Node>,
 }
 
 #[godot_api]
 impl INode for SkillLoader {
-    fn ready(&mut self) {}
+    fn ready(&mut self) {
+        self.on_player_used_action();
+    }
 }
 
 #[godot_api]
@@ -73,7 +77,7 @@ impl SkillLoader {
         }
     }
 
-    fn on_player_used_action(&mut self, path: NodePath, skill: PlayerSkills) {
+    fn on_player_used_action(&mut self) {
         // let check_action_and_char = self.base().callable("new_cast_player_skill");
         // let mut vars = Array::new();
         // vars.push(path.to_variant());
@@ -83,12 +87,23 @@ impl SkillLoader {
         //     "player_spell_was_cast".into(),
         //     check_action_and_char.bindv(vars),
         // );
-        let call = Callable::from_object_method(
-            &self.base().to_godot(),
-            StringName::from("new_cast_player_skill"),
-        );
-        let call = call.bindv(array![path.to_variant(), skill.to_variant()]);
-        self.base_mut()
-            .connect("player_spell_was_cast".into(), call);
+
+        //     godot_print!("insdie onplayerusedaction");
+        //     let tree = self.base().get_tree().unwrap();
+        //     let root = tree.get_root().unwrap();
+        //     let mut mage = root.get_node_as::<Mage>("Main/Mage");
+        //     mage.connect(
+        //         "player_spell_was_cast".into(),
+        //         Callable::from_object_method(
+        //             &self.base().to_godot(),
+        //             StringName::from("new_cast_player_skill"),
+        //         ),
+        //     );
+        //
+        //     let x = self.base().is_connected(
+        //         "player_spell_was_cast".into(),
+        //         Callable::from_object_method(&self.base().to_godot(), "new_cast_player_skill"),
+        //     );
+        //     godot_print!("is connected? {}", x);
     }
 }
