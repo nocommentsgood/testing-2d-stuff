@@ -1,4 +1,5 @@
 mod button;
+mod resources;
 mod enums {
     pub mod player_char_enums;
 }

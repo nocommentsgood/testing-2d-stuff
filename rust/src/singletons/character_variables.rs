@@ -39,3 +39,7 @@ impl INode for PlayerVariables {
         self.active_skills.insert(2, PlayerSkills::TEST_SPELL);
     }
 }
+
+trait Damageable<T> {
+    fn take_damage(&mut self, amount: i32) {}
+}

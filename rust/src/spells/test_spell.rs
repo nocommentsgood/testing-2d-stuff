@@ -39,7 +39,7 @@ impl IArea2D for TestSpell {
         if input.is_action_pressed("click".into()) {
             let target = self.base().get_global_mouse_position();
             self.target = target;
-            let distance = self.base().get_position().distance_to(self.target);
+            let distance = self.base().get_global_position().distance_to(self.target);
             let mut viewport = self.base().get_viewport().unwrap();
 
             if distance > self.max_distance {
@@ -66,12 +66,12 @@ impl IArea2D for TestSpell {
     }
 
     fn physics_process(&mut self, delta: f64) {
-        let position = self.base().get_position();
+        let position = self.base().get_global_position();
         let velocity = (self.target - position).normalized() * self.speed * delta as f32;
         let distance = position.distance_to(self.target);
 
         if distance > 10.0 {
-            self.base_mut().set_position(position + velocity);
+            self.base_mut().set_global_position(position + velocity);
         }
     }
 }
