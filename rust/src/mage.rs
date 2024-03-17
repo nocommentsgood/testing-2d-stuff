@@ -1,14 +1,4 @@
-use std::{collections::HashMap, default};
-
-use crate::{
-    enums::player_char_enums::{
-        character_control_state_machine::CharacterState, skills::PlayerSkills,
-    },
-    singletons::{
-        action_loader::SkillLoader, action_manager::ActionManager,
-        character_variables::PlayerVariables,
-    },
-};
+use crate::enums::player_char_enums::character_control_state_machine::CharacterState;
 use godot::{
     engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, InputEvent},
     prelude::*,

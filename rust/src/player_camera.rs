@@ -1,4 +1,3 @@
-use godot::engine::InputEvent;
 use godot::prelude::*;
 
 #[derive(GodotClass)]
