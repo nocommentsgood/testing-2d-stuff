@@ -1,5 +1,7 @@
 use godot::prelude::*;
 
+use crate::enums::player_char_enums::skills::PlayerSkills;
+
 #[derive(GodotClass)]
 #[class(base = Resource)]
 pub struct PlayerVariableResource {
@@ -7,6 +9,8 @@ pub struct PlayerVariableResource {
     health: i32,
     #[export]
     max_movement_per_turn: i32,
+    #[export]
+    active_skills: Dictionary,
     #[export]
     actions: i16,
     #[export]
@@ -43,9 +47,13 @@ impl IResource for PlayerVariableResource {
         Self {
             health: 0,
             max_movement_per_turn: 1000,
+            active_skills: dict! {
+                1: PlayerSkills::FIREBALL,
+                2: PlayerSkills::TEST_SPELL,
+            },
             actions: 1,
             bonus_actions: 1,
-            level_1_spell_slots: 1,
+            level_1_spell_slots: 2,
             level_2_spell_slots: 1,
             level_3_spell_slots: 1,
             level_4_spell_slots: 1,

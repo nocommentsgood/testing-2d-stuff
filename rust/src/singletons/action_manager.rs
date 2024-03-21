@@ -1,10 +1,13 @@
 use godot::prelude::*;
 
-use crate::{enums::player_char_enums::skills::PlayerSkills, mage::Mage};
+use crate::{
+    enums::player_char_enums::skills::PlayerSkills, mage::Mage,
+    resources::player_vars::PlayerVariableResource,
+};
 
 use super::{
     action_loader::{self, SkillLoader},
-    character_variables::PlayerVariables,
+    character_variable_manager::PlayerVariableManager,
 };
 
 #[derive(GodotClass)]
@@ -28,30 +31,34 @@ impl ActionManager {
         self.base().get_node_as("SkillLoader")
     }
 
-    fn player_vars(&mut self) -> Gd<PlayerVariables> {
+    fn player_vars(&mut self) -> Gd<PlayerVariableManager> {
         let tree = self.base().get_tree().unwrap();
         let root = tree.get_root().unwrap();
-        root.get_node_as("PlayerVars")
+        root.get_node_as("PlayerVarManager")
     }
 
     #[func]
     fn on_player_request_skill_action(&mut self, skill_index: i16, player_char_path: NodePath) {
         let player_vars = self.player_vars();
-        let player_vars = player_vars.bind();
-        let skill = player_vars.active_skills.get(&skill_index);
+        let player_var_manager = player_vars.bind();
+        let player_var_resource = player_var_manager.get_mage_vars().unwrap();
 
-        if let Some(s) = skill {
-            let instance = PlayerSkills::load_skill(s);
+        if let Ok(vars) = player_var_resource.try_cast::<PlayerVariableResource>() {
+            let vars = vars.bind();
+            let skills = vars.get_active_skills();
+            let skill = skills.get(skill_index).expect("action manager line 48");
+            let skill = skill.to::<PlayerSkills>();
+            let skill_instance = PlayerSkills::load_skill(&skill);
 
-            if let Some(inst) = instance {
+            if let Some(instance) = skill_instance {
                 let player_char = self.base().get_node(player_char_path);
 
                 if let Some(mut char) = player_char {
-                    char.add_child(inst);
+                    char.add_child(instance);
                 }
             }
         } else {
-            godot_error!("skill index did not match skill");
+            godot_print!("something wrong in action manager");
         }
     }
 

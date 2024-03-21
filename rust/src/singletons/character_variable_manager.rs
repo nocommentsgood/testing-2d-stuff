@@ -1,12 +1,17 @@
 use godot::{engine::Window, prelude::*};
 
-use crate::{mage::Mage, resources::player_vars::PlayerVariableResource};
+use crate::{
+    enums::player_char_enums::playable_variables::PlayableCharVariables, mage::Mage,
+    resources::player_vars::PlayerVariableResource,
+};
 
 #[derive(GodotClass)]
-#[class(base = Node)]
-struct PlayerVariableManager {
+#[class(init, base = Node)]
+pub struct PlayerVariableManager {
     #[export]
-    vars: Option<Gd<Node>>,
+    mage_vars: Option<Gd<PlayerVariableResource>>,
+    #[export]
+    fighter_vars: Option<Gd<PlayerVariableResource>>,
     #[export]
     path: NodePath,
     base: Base<Node>,
@@ -14,15 +19,7 @@ struct PlayerVariableManager {
 
 #[godot_api]
 impl INode for PlayerVariableManager {
-    fn init(base: Base<Node>) -> Self {
-        Self {
-            vars: None,
-            path: NodePath::default(),
-            base,
-        }
-    }
     fn ready(&mut self) {
-        self.vars = Some(self.base().get_property());
         self.connect_to_player_characters();
     }
 }
@@ -56,8 +53,60 @@ impl PlayerVariableManager {
 
     #[func]
     fn do_something_with_resource(&mut self) {
-        let v = self.get_vars().unwrap();
-        let vo = v.();
-        godot_print!("health is: {}", vo.get_health());
+        let v = self.get_mage_vars().unwrap();
+        let vo = v.try_cast::<PlayerVariableResource>();
+        if let Ok(x) = vo {
+            let vars = x.bind();
+            godot_print!("health is : {}", vars.get_health());
+        }
+    }
+
+    #[func]
+    fn huh(&mut self) {
+        let h = self.on_player_var_requested(PlayableCharVariables::HEALTH);
+    }
+
+    fn on_player_var_requested(&mut self, resource_type: PlayableCharVariables) -> Option<Variant> {
+        let vars = self.get_mage_vars().unwrap();
+        let vars = vars.try_cast::<PlayerVariableResource>();
+        if let Ok(vars) = vars {
+            let vars = vars.bind();
+
+            let x = match resource_type {
+                PlayableCharVariables::HEALTH => Some(vars.get_health().to_variant()),
+                PlayableCharVariables::MAX_MOVEMENT_PER_TURN => {
+                    Some(vars.get_max_movement_per_turn().to_variant())
+                }
+                PlayableCharVariables::ACTIVE_SKILLS => Some(vars.get_active_skills().to_variant()),
+                PlayableCharVariables::ACTIONS => Some(vars.get_actions().to_variant()),
+                PlayableCharVariables::BONUS_ACTIONS => Some(vars.get_bonus_actions().to_variant()),
+                PlayableCharVariables::LEVEL_1_SPELL_SLOTS => {
+                    Some(vars.get_level_1_spell_slots().to_variant())
+                }
+                PlayableCharVariables::LEVEL_2_SPELL_SLOTS => {
+                    Some(vars.get_level_2_spell_slots().to_variant())
+                }
+                PlayableCharVariables::LEVEL_3_SPELL_SLOTS => {
+                    Some(vars.get_level_3_spell_slots().to_variant())
+                }
+                PlayableCharVariables::LEVEL_4_SPELL_SLOTS => {
+                    Some(vars.get_level_4_spell_slots().to_variant())
+                }
+                PlayableCharVariables::LEVEL_5_SPELL_SLOTS => {
+                    Some(vars.get_level_5_spell_slots().to_variant())
+                }
+                PlayableCharVariables::LEVEL_6_SPELL_SLOTS => {
+                    Some(vars.get_level_6_spell_slots().to_variant())
+                }
+                PlayableCharVariables::CHARISMA => Some(vars.get_charisma().to_variant()),
+                PlayableCharVariables::WISDOM => Some(vars.get_wisdom().to_variant()),
+                PlayableCharVariables::STRENGTH => Some(vars.get_strength().to_variant()),
+                PlayableCharVariables::DEXTERITY => Some(vars.get_dexterity().to_variant()),
+                PlayableCharVariables::CONSTITUTION => Some(vars.get_constitution().to_variant()),
+            };
+            x
+        } else {
+            None
+        }
     }
 }

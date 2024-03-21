@@ -1,6 +1,8 @@
 use crate::{
-    enums::player_char_enums::character_control_state_machine::CharacterState,
-    traits::characters::classes::wizard::Playable,
+    enums::player_char_enums::{
+        character_control_state_machine::CharacterState, playable_variables::PlayableCharVariables,
+    },
+    traits::characters::playable_character::Playable,
 };
 use godot::{
     engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, InputEvent},
@@ -70,7 +72,7 @@ impl ICharacterBody2D for Mage {
 impl Mage {
     #[func]
     fn on_spellbutton_pressed(&mut self, toggled: bool, skill_index: i16) {
-        self.request_do_skill(toggled, skill_index);
+        self.cast_spell_action(toggled, skill_index);
     }
 
     #[func]
@@ -84,6 +86,7 @@ impl Mage {
                 &[skill_index.to_variant(), path.to_variant()],
             );
 
+            godot_print!("requesting health from mage");
             self.get_health();
         } else {
             self.state = CharacterState::DEFAULT
@@ -93,9 +96,6 @@ impl Mage {
     #[signal]
     fn player_requests_skill_action(skill_index: i16, player_char_path: NodePath);
 
-    #[signal]
-    fn request_level_1_skills(player_char_path: NodePath);
-
     #[func]
     fn spell_was_cancelled(&mut self) {
         self.state = CharacterState::DEFAULT
@@ -103,28 +103,29 @@ impl Mage {
 
     #[func]
     fn get_health(&mut self) {
-        self.base_mut().emit_signal("request_health".into(), &[]);
+        godot_print!("emitting health signal from mage");
+        self.request_health();
     }
 
     #[signal]
-    fn request_health();
+    fn character_variable_request(resource_type: PlayableCharVariables);
+
+    #[func]
+    fn request_health(&mut self) {
+        self.request_character_variable(PlayableCharVariables::HEALTH);
+    }
 }
 
 impl Playable for Mage {
-    fn request_do_skill(&mut self, toggled: bool, skill_index: i16) {
-        if toggled {
-            self.state = CharacterState::CASTING_SPELL;
-            let path = self.base().get_path();
-
-            self.base_mut().emit_signal(
-                "player_requests_skill_action".into(),
-                &[skill_index.to_variant(), path.to_variant()],
-            );
-        }
+    fn request_character_variable(
+        &mut self,
+        variable: crate::enums::player_char_enums::playable_variables::PlayableCharVariables,
+    ) {
+        self.base_mut().emit_signal(
+            "character_variable_request".into(),
+            &[variable.to_variant()],
+        );
     }
 
-    fn cancel_current_skill(&mut self) {
-        // need to check for input (right click)
-        self.state = CharacterState::DEFAULT;
-    }
+    fn character_variable_request() {}
 }
