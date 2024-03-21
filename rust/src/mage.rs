@@ -1,13 +1,8 @@
-use std::{collections::HashMap, default};
-
 use crate::{
     enums::player_char_enums::{
-        character_control_state_machine::CharacterState, skills::PlayerSkills,
+        character_control_state_machine::CharacterState, playable_variables::PlayableCharVariables,
     },
-    singletons::{
-        action_loader::SkillLoader, action_manager::ActionManager,
-        character_variables::PlayerVariables,
-    },
+    traits::characters::playable_character::Playable,
 };
 use godot::{
     engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, InputEvent},
@@ -76,8 +71,8 @@ impl ICharacterBody2D for Mage {
 #[godot_api]
 impl Mage {
     #[func]
-    fn on_spellbutton_pressed(&mut self, toggled: bool, spell_index: i16) {
-        self.cast_spell_action(toggled, spell_index);
+    fn on_spellbutton_pressed(&mut self, toggled: bool, skill_index: i16) {
+        self.cast_spell_action(toggled, skill_index);
     }
 
     #[func]
@@ -90,6 +85,9 @@ impl Mage {
                 "player_requests_skill_action".into(),
                 &[skill_index.to_variant(), path.to_variant()],
             );
+
+            godot_print!("requesting health from mage");
+            self.get_health();
         } else {
             self.state = CharacterState::DEFAULT
         }
@@ -102,4 +100,32 @@ impl Mage {
     fn spell_was_cancelled(&mut self) {
         self.state = CharacterState::DEFAULT
     }
+
+    #[func]
+    fn get_health(&mut self) {
+        godot_print!("emitting health signal from mage");
+        self.request_health();
+    }
+
+    #[signal]
+    fn character_variable_request(resource_type: PlayableCharVariables);
+
+    #[func]
+    fn request_health(&mut self) {
+        self.request_character_variable(PlayableCharVariables::HEALTH);
+    }
+}
+
+impl Playable for Mage {
+    fn request_character_variable(
+        &mut self,
+        variable: crate::enums::player_char_enums::playable_variables::PlayableCharVariables,
+    ) {
+        self.base_mut().emit_signal(
+            "character_variable_request".into(),
+            &[variable.to_variant()],
+        );
+    }
+
+    fn character_variable_request() {}
 }

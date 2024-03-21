@@ -1,7 +1,4 @@
-use godot::{
-    engine::{Button, CanvasLayer, CharacterBody2D},
-    prelude::*,
-};
+use godot::prelude::*;
 
 #[derive(GodotClass)]
 #[class(base=Node)]

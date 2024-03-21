@@ -1,5 +1,5 @@
 use godot::{
-    engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D},
+    engine::{CharacterBody2D, ICharacterBody2D},
     prelude::*,
 };
 

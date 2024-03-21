@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://dr5wuk2fclptg"]
+
+[ext_resource type="PlayerVariableResource" uid="uid://c3udcdhdmgs6t" path="res://resources/mage_resources.tres" id="1_4drsj"]
+[ext_resource type="PlayerVariableResource" uid="uid://umy1fib3sb2" path="res://resources/fighter_resources.tres" id="2_pkffu"]
+
+[node name="PlayerVariableManager" type="PlayerVariableManager"]
+mage_vars = ExtResource("1_4drsj")
+fighter_vars = ExtResource("2_pkffu")
