@@ -1,5 +1,8 @@
 mod button;
 mod resources;
+pub mod traits {
+    pub mod characters;
+}
 mod enums {
     pub mod player_char_enums;
 }

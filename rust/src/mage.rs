@@ -1,4 +1,7 @@
-use crate::enums::player_char_enums::character_control_state_machine::CharacterState;
+use crate::{
+    enums::player_char_enums::character_control_state_machine::CharacterState,
+    traits::characters::classes::wizard::Playable,
+};
 use godot::{
     engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, InputEvent},
     prelude::*,
@@ -66,8 +69,8 @@ impl ICharacterBody2D for Mage {
 #[godot_api]
 impl Mage {
     #[func]
-    fn on_spellbutton_pressed(&mut self, toggled: bool, spell_index: i16) {
-        self.cast_spell_action(toggled, spell_index);
+    fn on_spellbutton_pressed(&mut self, toggled: bool, skill_index: i16) {
+        self.request_do_skill(toggled, skill_index);
     }
 
     #[func]
@@ -80,6 +83,8 @@ impl Mage {
                 "player_requests_skill_action".into(),
                 &[skill_index.to_variant(), path.to_variant()],
             );
+
+            self.get_health();
         } else {
             self.state = CharacterState::DEFAULT
         }
@@ -88,8 +93,38 @@ impl Mage {
     #[signal]
     fn player_requests_skill_action(skill_index: i16, player_char_path: NodePath);
 
+    #[signal]
+    fn request_level_1_skills(player_char_path: NodePath);
+
     #[func]
     fn spell_was_cancelled(&mut self) {
         self.state = CharacterState::DEFAULT
+    }
+
+    #[func]
+    fn get_health(&mut self) {
+        self.base_mut().emit_signal("request_health".into(), &[]);
+    }
+
+    #[signal]
+    fn request_health();
+}
+
+impl Playable for Mage {
+    fn request_do_skill(&mut self, toggled: bool, skill_index: i16) {
+        if toggled {
+            self.state = CharacterState::CASTING_SPELL;
+            let path = self.base().get_path();
+
+            self.base_mut().emit_signal(
+                "player_requests_skill_action".into(),
+                &[skill_index.to_variant(), path.to_variant()],
+            );
+        }
+    }
+
+    fn cancel_current_skill(&mut self) {
+        // need to check for input (right click)
+        self.state = CharacterState::DEFAULT;
     }
 }

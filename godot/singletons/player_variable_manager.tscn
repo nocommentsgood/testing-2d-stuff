@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dr5wuk2fclptg"]
+
+[ext_resource type="PlayerVariableResource" uid="uid://d6f2jn05p8mk" path="res://resources/PlayerVarResource.tres" id="1_w3kbg"]
+
+[node name="PlayerVariableManager" type="PlayerVariableManager"]
+vars = ExtResource("1_w3kbg")

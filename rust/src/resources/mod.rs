@@ -1,1 +1,1 @@
-mod player_vars;
+pub mod player_vars;
