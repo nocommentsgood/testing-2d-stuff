@@ -39,16 +39,6 @@ impl PlayerVariableManager {
         let root = self.root();
         let mut mage = root.get_node_as::<Mage>(NodePath::from("Main/Mage"));
         let mut mage = mage.bind_mut();
-        let call = self
-            .base()
-            .callable(StringName::from("on_character_requests_level_1_skills"));
-        mage.base_mut()
-            .connect("request_level_1_skills".into(), call);
-
-        let call2 = self
-            .base()
-            .callable(StringName::from("do_something_with_resource"));
-        mage.base_mut().connect("request_health".into(), call2);
     }
 
     #[func]
@@ -61,18 +51,13 @@ impl PlayerVariableManager {
         }
     }
 
-    #[func]
-    fn huh(&mut self) {
-        let h = self.on_player_var_requested(PlayableCharVariables::HEALTH);
-    }
-
     fn on_player_var_requested(&mut self, resource_type: PlayableCharVariables) -> Option<Variant> {
         let vars = self.get_mage_vars().unwrap();
         let vars = vars.try_cast::<PlayerVariableResource>();
         if let Ok(vars) = vars {
             let vars = vars.bind();
 
-            let x = match resource_type {
+            match resource_type {
                 PlayableCharVariables::HEALTH => Some(vars.get_health().to_variant()),
                 PlayableCharVariables::MAX_MOVEMENT_PER_TURN => {
                     Some(vars.get_max_movement_per_turn().to_variant())
@@ -103,8 +88,7 @@ impl PlayerVariableManager {
                 PlayableCharVariables::STRENGTH => Some(vars.get_strength().to_variant()),
                 PlayableCharVariables::DEXTERITY => Some(vars.get_dexterity().to_variant()),
                 PlayableCharVariables::CONSTITUTION => Some(vars.get_constitution().to_variant()),
-            };
-            x
+            }
         } else {
             None
         }

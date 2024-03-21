@@ -397,3 +397,13 @@ frame_progress = 0.17348
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -11)
 shape = SubResource("CapsuleShape2D_aexm3")
+
+[node name="Camera2D" type="PlayerCamera" parent="."]
+enabled = false
+zoom = Vector2(3, 3)
+limit_left = -5000
+limit_top = -5000
+limit_right = 5000
+limit_bottom = 5000
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0

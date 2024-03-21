@@ -17,7 +17,6 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-PlayerVars="*res://scenes/player_variables.tscn"
 SkillHandler="*res://singletons/skill_loader.tscn"
 ActionStateManager="*res://singletons/action_manager.tscn"
 PlayerVarManager="*res://singletons/player_variable_manager.tscn"

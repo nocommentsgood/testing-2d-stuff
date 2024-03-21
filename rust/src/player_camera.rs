@@ -1,4 +1,7 @@
-use godot::prelude::*;
+use godot::{
+    engine::{InputEvent, InputEventMouseButton},
+    prelude::*,
+};
 
 #[derive(GodotClass)]
 #[class(base=Camera2D)]
@@ -13,7 +16,7 @@ struct PlayerCamera {
 impl ICamera2D for PlayerCamera {
     fn init(base: Base<Camera2D>) -> Self {
         PlayerCamera {
-            speed: 100.0,
+            speed: 300.0,
             screen_size: Vector2::new(0.0, 0.0),
             base,
         }
@@ -40,6 +43,16 @@ impl ICamera2D for PlayerCamera {
         }
         if input.is_action_pressed("camera_up".into()) {
             velocity += Vector2::UP;
+        }
+        if input.is_action_just_released("zoom_out".into()) {
+            godot_print!("zooming out");
+            let zoom = self.base().get_zoom();
+            self.base_mut().set_zoom(zoom + Vector2::new(-0.1, -0.1));
+        }
+        if input.is_action_just_released("zoom_in".into()) {
+            godot_print!("zooming in");
+            let zoom = self.base().get_zoom();
+            self.base_mut().set_zoom(zoom + Vector2::new(0.1, 0.1));
         }
 
         if velocity.length() > 0.0 {
