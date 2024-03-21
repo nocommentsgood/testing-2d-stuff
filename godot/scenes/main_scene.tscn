@@ -9,7 +9,7 @@
 [sub_resource type="Environment" id="Environment_1sbv5"]
 background_mode = 3
 ambient_light_color = Color(0.803922, 0, 0, 1)
-ambient_light_energy = 10.23
+ambient_light_energy = 16.0
 tonemap_exposure = 1.09
 ssao_radius = 7.24
 ssao_intensity = 6.4
@@ -45,14 +45,16 @@ spell_slot_number = 1
 spell_slot_number = 2
 text = ""
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_1sbv5")
-
 [node name="Camera2D" type="PlayerCamera" parent="."]
-position = Vector2(338, 197)
 zoom = Vector2(3, 3)
+limit_top = -5000
+limit_right = 5000
+limit_bottom = 5000
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1sbv5")
 
 [node name="wolf" parent="." instance=ExtResource("5_63ur0")]
 position = Vector2(813, 552)

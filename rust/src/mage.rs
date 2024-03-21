@@ -85,9 +85,6 @@ impl Mage {
                 "player_requests_skill_action".into(),
                 &[skill_index.to_variant(), path.to_variant()],
             );
-
-            godot_print!("requesting health from mage");
-            self.get_health();
         } else {
             self.state = CharacterState::DEFAULT
         }
