@@ -1,4 +1,4 @@
-use godot::prelude::*;
+use godot::{engine::Window, prelude::*};
 
 use crate::{
     enums::player_char_enums::skills::PlayerSkills, mage::Mage,
@@ -13,6 +13,8 @@ use super::{
 #[derive(GodotClass)]
 #[class(init, base=Node)]
 pub struct ActionManager {
+    #[export]
+    player_var_path: NodePath,
     #[var]
     action_loader: Option<Gd<SkillLoader>>,
     base: Base<Node>,
@@ -21,31 +23,38 @@ pub struct ActionManager {
 #[godot_api]
 impl INode for ActionManager {
     fn ready(&mut self) {
+        self.player_var_path = NodePath::from("PlayerVarManager");
         self.connect_to_mage();
     }
 }
 
 #[godot_api]
 impl ActionManager {
+    fn tree(&self) -> Gd<SceneTree> {
+        self.base().get_tree().unwrap()
+    }
+
+    fn root(&self) -> Gd<Window> {
+        self.tree().get_root().unwrap()
+    }
+
     fn action_loader(&mut self) -> Gd<SkillLoader> {
         self.base().get_node_as("SkillLoader")
     }
 
     fn player_vars(&mut self) -> Gd<PlayerVariableManager> {
-        let tree = self.base().get_tree().unwrap();
-        let root = tree.get_root().unwrap();
-        root.get_node_as("PlayerVarManager")
+        self.root().get_node_as(self.get_player_var_path())
     }
 
     #[func]
     fn on_player_request_skill_action(&mut self, skill_index: i16, player_char_path: NodePath) {
         let player_vars = self.player_vars();
         let player_var_manager = player_vars.bind();
-        let player_var_resource = player_var_manager.get_mage_vars().unwrap();
+        let player_var_resource = player_var_manager.get_mage_vars();
 
-        if let Ok(vars) = player_var_resource.try_cast::<PlayerVariableResource>() {
-            let vars = vars.bind();
-            let skills = vars.get_active_skills();
+        if let Some(vars) = player_var_resource {
+            let mage_vars = vars.bind();
+            let skills = mage_vars.get_active_skills();
             let skill = skills.get(skill_index).expect("action manager line 48");
             let skill = skill.to::<PlayerSkills>();
             let skill_instance = PlayerSkills::load_skill(&skill);

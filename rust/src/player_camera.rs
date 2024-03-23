@@ -1,7 +1,4 @@
-use godot::{
-    engine::{InputEvent, InputEventMouseButton},
-    prelude::*,
-};
+use godot::prelude::*;
 
 #[derive(GodotClass)]
 #[class(base=Camera2D)]

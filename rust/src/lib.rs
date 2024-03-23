@@ -2,6 +2,7 @@ mod button;
 mod resources;
 pub mod traits {
     pub mod characters;
+    pub mod global;
 }
 mod enums {
     pub mod player_char_enums;
