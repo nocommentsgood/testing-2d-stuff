@@ -57,17 +57,21 @@ impl ActionManager {
             let skills = mage_vars.get_active_skills();
             let skill = skills.get(skill_index).expect("action manager line 48");
             let skill = skill.to::<PlayerSkills>();
-            let skill_instance = PlayerSkills::load_skill(&skill);
+            let required_spell_level = PlayerSkills::get_required_spellslots(&skill);
+            let available_spellslots = mage_vars.get_remaining_spell_slots(required_spell_level);
 
-            if let Some(instance) = skill_instance {
-                let player_char = self.base().get_node(player_char_path);
+            if available_spellslots != 0 {
+                let skill_instance = PlayerSkills::load_skill(&skill);
+                if let Some(instance) = skill_instance {
+                    let player_char = self.base().get_node(player_char_path);
 
-                if let Some(mut char) = player_char {
-                    char.add_child(instance);
+                    if let Some(mut char) = player_char {
+                        char.add_child(instance);
+                    }
                 }
             }
         } else {
-            godot_print!("something wrong in action manager");
+            godot_print!("does not have enough spell slots");
         }
     }
 

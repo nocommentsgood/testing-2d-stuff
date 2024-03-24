@@ -23,7 +23,6 @@ pub struct GameStateManager {
 impl INode for GameStateManager {
     fn input(&mut self, event: Gd<InputEvent>) {
         if event.is_action_pressed("enter_turn_based".into()) {
-            godot_print!("entering turn based");
             self.set_gamestate_to_turn_based();
         }
     }
@@ -31,7 +30,11 @@ impl INode for GameStateManager {
     fn ready(&mut self) {}
 }
 
+#[godot_api]
 impl GameStateManager {
+    #[signal]
+    fn changed_gamestate_to_turn_based();
+
     fn tree(&self) -> Gd<SceneTree> {
         self.base().get_tree().unwrap()
     }
@@ -50,7 +53,12 @@ impl GameStateManager {
             &[],
         );
 
-        let enemy_group = tree.get_nodes_in_group("enemy".into());
-        tree.call_group(enemy_group, "set_state_to_turn_based".into(), &[]);
+        tree.call_group("enemy".into(), "set_state_to_turn_based".into(), &[]);
+    }
+
+    fn on_player_entered_combat(&mut self) {
+        self.set_gamestate_to_turn_based();
+        self.base_mut()
+            .emit_signal("changed_gamestate_to_turn_based".into(), &[]);
     }
 }

@@ -26,4 +26,12 @@ impl PlayerSkills {
             _ => None,
         }
     }
+
+    pub fn get_required_spellslots(skill: &PlayerSkills) -> i16 {
+        match skill {
+            PlayerSkills::FIREBALL => 3,
+            PlayerSkills::TEST_SPELL => 2,
+            _ => 0,
+        }
+    }
 }
