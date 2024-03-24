@@ -42,12 +42,15 @@ impl GameStateManager {
     pub fn set_gamestate_to_turn_based(&mut self) {
         let mut tree = self.tree();
         godot_print!("trying to set state");
-        let group = tree.get_nodes_in_group("playercharacters".into());
-        godot_print!("got group: {}", group);
+        let player_group = tree.get_nodes_in_group("playercharacters".into());
+        godot_print!("got group: {}", player_group);
         tree.call_group(
             "playercharacters".into(),
             "set_state_to_turn_based".into(),
             &[],
         );
+
+        let enemy_group = tree.get_nodes_in_group("enemy".into());
+        tree.call_group(enemy_group, "set_state_to_turn_based".into(), &[]);
     }
 }

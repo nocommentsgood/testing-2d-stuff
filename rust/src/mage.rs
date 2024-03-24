@@ -29,7 +29,7 @@ impl ICharacterBody2D for Mage {
     fn init(base: Base<CharacterBody2D>) -> Self {
         Self {
             speed: 200.0,
-            max_movement_per_turn: 100.0,
+            max_movement_per_turn: 1000.0,
             movement_left: 100.0,
             target: Vector2::ZERO,
             state: CharacterState::DEFAULT,
@@ -151,7 +151,8 @@ impl Playable for Mage {
 
         self.base_mut().set_velocity(velocity);
 
-        if dist > 10.0 && dist < self.get_max_movement_per_turn() {
+        if dist > 10.0 && dist < self.get_max_movement_per_turn() && self.get_movement_left() != 0.0
+        {
             let movement = self.get_movement_left();
 
             self.base_mut().move_and_slide();
