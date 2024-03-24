@@ -100,4 +100,15 @@ impl PlayerVariableResource {
             _ => 0,
         }
     }
+    pub fn set_remaining_spell_slots(&mut self, spell_slot_level: i16, new_count: i16) {
+        match spell_slot_level {
+            1 => self.set_level_1_spell_slots(new_count),
+            2 => self.set_level_2_spell_slots(new_count),
+            3 => self.set_level_3_spell_slots(new_count),
+            4 => self.set_level_4_spell_slots(new_count),
+            5 => self.set_level_5_spell_slots(new_count),
+            6 => self.set_level_6_spell_slots(new_count),
+            _ => (),
+        }
+    }
 }
