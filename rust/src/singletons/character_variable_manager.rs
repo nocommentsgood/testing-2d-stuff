@@ -35,9 +35,6 @@ impl PlayerVariableManager {
     fn on_character_requests_level_1_skills(&mut self, path: NodePath) {}
 
     #[func]
-    fn set_remaining_spell_slots(count: i16) {}
-
-    #[func]
     fn connect_to_player_characters(&mut self) {
         let root = self.root();
         let mut mage = root.get_node_as::<Mage>(NodePath::from("Main/Mage"));
