@@ -1,3 +1,8 @@
+use crate::{
+    mage::Mage,
+    traits::{damageable::Damageable, damaging::Damaging, health::Health},
+    wolf::Wolf,
+};
 use godot::{
     engine::{AnimatedSprite2D, Area2D, IArea2D, InputEvent},
     prelude::*,
@@ -12,6 +17,8 @@ pub struct TestSpell {
     speed: real,
     #[var]
     velocity: Vector2,
+    #[export]
+    damage: u16,
     max_distance: real,
     base: Base<Area2D>,
 }
@@ -23,6 +30,7 @@ impl IArea2D for TestSpell {
             target: Vector2::ZERO,
             speed: 500.0,
             velocity: Vector2::ZERO,
+            damage: 20,
             max_distance: 1000.0,
             base,
         }
@@ -56,10 +64,7 @@ impl IArea2D for TestSpell {
                 self.base_mut().set_process_unhandled_input(false);
                 self.base_mut().set_physics_process(true);
                 timer.connect("timeout".into(), self.base().callable("animate_explosion"));
-                timer.connect(
-                    "timeout".into(),
-                    self.base().callable("get_colliding_bodies"),
-                );
+                timer.connect("timeout".into(), self.base().callable("prepare_damage"));
                 viewport.set_input_as_handled();
             }
         }
@@ -82,9 +87,8 @@ impl TestSpell {
     fn spell_hit_players(bodies: Array<Gd<Node2D>>);
 
     #[func]
-    fn get_colliding_bodies(&mut self) {
-        let bodies = self.base().get_overlapping_bodies();
-        godot_print!("bodies: {}", bodies);
+    fn get_colliding_bodies(&mut self) -> Array<Gd<Node2D>> {
+        self.base().get_overlapping_bodies()
     }
 
     #[func]
@@ -107,5 +111,27 @@ impl TestSpell {
             "animation_finished".into(),
             self.base().callable("on_explosion_anim_finished"),
         );
+    }
+
+    // dynamic dispatch is not supported but there might be a better way to do this
+    // otherwise would have to try cast to every damageable entity in the game
+    #[func]
+    fn prepare_damage(&mut self) {
+        let bodies = self.get_colliding_bodies();
+        for body in bodies.iter_shared() {
+            let body = body.clone().try_cast::<Wolf>();
+            if let Ok(mut wolf) = body {
+                wolf.take_damage(self.damage);
+                godot_print!("wolf took damage");
+            }
+        }
+    }
+}
+
+// not sure how to actually implement this yet
+impl crate::traits::damaging::Damaging for Gd<TestSpell> {
+    fn do_damage(&mut self, entity: &mut impl Damageable) {
+        let amount = self.bind().get_damage();
+        entity.take_damage(amount);
     }
 }

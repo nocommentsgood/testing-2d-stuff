@@ -2,7 +2,10 @@ mod button;
 mod resources;
 pub mod traits {
     pub mod characters;
+    pub mod damageable;
+    pub mod damaging;
     pub mod global;
+    pub mod health;
 }
 mod enums {
     pub mod player_char_enums;
