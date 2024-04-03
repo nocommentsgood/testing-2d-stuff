@@ -1,8 +1,8 @@
-use crate::{
-    enums::player_char_enums::{
-        character_control_state_machine::CharacterState, playable_variables::PlayableCharVariables,
-    },
-    traits::characters::playable_character::Playable,
+use crate::enums::player_char_enums::{
+    character_control_state_machine::CharacterState, playable_variables::PlayableCharVariables,
+};
+use crate::traits::{
+    characters::playable_character::Playable, damageable::Damageable, health::Health,
 };
 use godot::{
     engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, InputEvent},
@@ -14,8 +14,16 @@ use godot::{
 pub struct Mage {
     #[export]
     speed: real,
+    #[export]
+    max_movement_per_turn: f32,
+    #[export]
+    movement_left: f32,
     #[var]
     target: Vector2,
+
+    // TODO: this is just for testing
+    health: u16,
+
     state: CharacterState,
     base: Base<CharacterBody2D>,
 }
@@ -25,7 +33,10 @@ impl ICharacterBody2D for Mage {
     fn init(base: Base<CharacterBody2D>) -> Self {
         Self {
             speed: 200.0,
+            max_movement_per_turn: 500.0,
+            movement_left: 500.0,
             target: Vector2::ZERO,
+            health: 100,
             state: CharacterState::DEFAULT,
             base,
         }
@@ -41,29 +52,10 @@ impl ICharacterBody2D for Mage {
 
     fn physics_process(&mut self, _delta: f64) {
         if self.state == CharacterState::DEFAULT || self.state == CharacterState::MOVING {
-            let velocity = self.base().get_position().direction_to(self.target) * self.speed;
-            let mut animated_sprite = self
-                .base_mut()
-                .get_node_as::<AnimatedSprite2D>("AnimatedSprite2D");
-
-            self.base_mut().set_velocity(velocity);
-
-            if self.base().get_position().distance_to(self.target) > 10.0 {
-                self.base_mut().move_and_slide();
-            }
-
-            let animation;
-            if velocity.x > 0.0 && velocity.y > 0.0 {
-                animation = "right_down";
-            } else if velocity.x < 0.0 && velocity.y > 0.0 {
-                animation = "left_down";
-            } else if velocity.x < 0.0 && velocity.y < 0.0 {
-                animation = "left_up";
-            } else {
-                animation = "right_up";
-            }
-
-            animated_sprite.play_ex().name(animation.into()).done();
+            self.move_to_target(self.target);
+        }
+        if self.state == CharacterState::TURN_BASED {
+            self.turn_based_move_to_target(self.target);
         }
     }
 }
@@ -111,6 +103,16 @@ impl Mage {
     fn request_health(&mut self) {
         self.request_character_variable(PlayableCharVariables::HEALTH);
     }
+
+    #[func]
+    fn set_state_to_turn_based(&mut self) {
+        self.state = CharacterState::TURN_BASED;
+    }
+
+    #[func]
+    fn set_state_to_default(&mut self) {
+        self.state = CharacterState::DEFAULT;
+    }
 }
 
 impl Playable for Mage {
@@ -124,5 +126,86 @@ impl Playable for Mage {
         );
     }
 
-    fn character_variable_request() {}
+    fn move_to_target(&mut self, target: Vector2) {
+        let velocity = self.base().get_position().direction_to(self.target) * self.speed;
+        let mut animated_sprite = self
+            .base_mut()
+            .get_node_as::<AnimatedSprite2D>("AnimatedSprite2D");
+
+        self.base_mut().set_velocity(velocity);
+
+        if self.base().get_position().distance_to(self.target) > 10.0 {
+            self.base_mut().move_and_slide();
+        }
+
+        let animation;
+        if velocity.x > 0.0 && velocity.y > 0.0 {
+            animation = "right_down";
+        } else if velocity.x < 0.0 && velocity.y > 0.0 {
+            animation = "left_down";
+        } else if velocity.x < 0.0 && velocity.y < 0.0 {
+            animation = "left_up";
+        } else {
+            animation = "right_up";
+        }
+
+        animated_sprite.play_ex().name(animation.into()).done();
+    }
+
+    fn turn_based_move_to_target(&mut self, target: Vector2) {
+        let velocity = self.base().get_position().direction_to(self.target) * self.speed;
+        let dist = self.base().get_position().distance_to(self.target);
+        let cur_pos = self.base().get_position();
+        let movement = self.get_movement_left();
+        let mut animated_sprite = self
+            .base_mut()
+            .get_node_as::<AnimatedSprite2D>("AnimatedSprite2D");
+
+        self.base_mut().set_velocity(velocity);
+
+        if dist > 10.0 && self.get_movement_left() > 0.0 && dist <= self.get_max_movement_per_turn()
+        {
+            self.base_mut().move_and_slide();
+            let position = self.base().get_position();
+            self.set_movement_left(movement - ((cur_pos - position).length()));
+        } else {
+            godot_print!("cannot move that far");
+        }
+
+        let animation;
+        if velocity.x > 0.0 && velocity.y > 0.0 {
+            animation = "right_down";
+        } else if velocity.x < 0.0 && velocity.y > 0.0 {
+            animation = "left_down";
+        } else if velocity.x < 0.0 && velocity.y < 0.0 {
+            animation = "left_up";
+        } else {
+            animation = "right_up";
+        }
+
+        animated_sprite.play_ex().name(animation.into()).done();
+    }
+
+    fn set_state_to_turn_based(&mut self) {
+        godot_print!("setting mage state to turn");
+        self.state = CharacterState::TURN_BASED;
+    }
+}
+
+impl Health for Gd<Mage> {
+    fn health(&self) -> u16 {
+        self.bind().health
+    }
+
+    fn restore_health(&mut self, amount: u16) {
+        todo!()
+    }
+}
+
+impl Damageable for Gd<Mage> {
+    fn take_damage(&mut self, amount: u16) {
+        self.bind_mut().health -= amount;
+    }
+
+    fn t_damage(entity: &dyn Health) {}
 }

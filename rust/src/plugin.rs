@@ -15,15 +15,16 @@ impl GlobalState {
     const ACTION_LOADER: &'static str = "SkillHandler";
     const ACTION_MANAGER: &'static str = "ActionStateManager";
     const CHAR_VAR_MANAGER: &'static str = "PlayerVarManager";
+    const GAME_STATE_MANAGER: &'static str = "CombatStateManager";
 }
 
 #[godot_api]
 impl IEditorPlugin for GlobalState {
     fn enter_tree(&mut self) {
-        // self.base_mut().add_autoload_singleton(
-        //     GlobalState::PLAYER_VARS.into(),
-        //     GString::from("res://scenes/player_variables.tscn"),
-        // );
+        self.base_mut().add_autoload_singleton(
+            GlobalState::GAME_STATE_MANAGER.into(),
+            GString::from("res://singletons/game_state_manager.tscn"),
+        );
         self.base_mut().add_autoload_singleton(
             GlobalState::ACTION_LOADER.into(),
             GString::from("res://singletons/skill_loader.tscn"),
@@ -39,8 +40,8 @@ impl IEditorPlugin for GlobalState {
     }
 
     fn exit_tree(&mut self) {
-        // self.base_mut()
-        //     .remove_autoload_singleton(GlobalState::PLAYER_VARS.into());
+        self.base_mut()
+            .remove_autoload_singleton(GlobalState::GAME_STATE_MANAGER.into());
         self.base_mut()
             .remove_autoload_singleton(GlobalState::ACTION_LOADER.into());
         self.base_mut()

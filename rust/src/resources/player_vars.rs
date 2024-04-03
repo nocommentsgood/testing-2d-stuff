@@ -28,6 +28,18 @@ pub struct PlayerVariableResource {
     #[export]
     level_6_spell_slots: i16,
     #[export]
+    max_level_1_spell_slots: i16,
+    #[export]
+    max_level_2_spell_slots: i16,
+    #[export]
+    max_level_3_spell_slots: i16,
+    #[export]
+    max_level_4_spell_slots: i16,
+    #[export]
+    max_level_5_spell_slots: i16,
+    #[export]
+    max_level_6_spell_slots: i16,
+    #[export]
     charisma: i16,
     #[export]
     wisdom: i16,
@@ -59,12 +71,44 @@ impl IResource for PlayerVariableResource {
             level_4_spell_slots: 1,
             level_5_spell_slots: 1,
             level_6_spell_slots: 1,
+            max_level_1_spell_slots: 2,
+            max_level_2_spell_slots: 1,
+            max_level_3_spell_slots: 1,
+            max_level_4_spell_slots: 1,
+            max_level_5_spell_slots: 1,
+            max_level_6_spell_slots: 1,
             charisma: 2,
             wisdom: 2,
             strength: 2,
             dexterity: 2,
             constitution: 2,
             base,
+        }
+    }
+}
+
+#[godot_api]
+impl PlayerVariableResource {
+    pub fn get_remaining_spell_slots(&self, spell_slot_level: i16) -> i16 {
+        match spell_slot_level {
+            1 => self.get_level_1_spell_slots(),
+            2 => self.get_level_2_spell_slots(),
+            3 => self.get_level_3_spell_slots(),
+            4 => self.get_level_4_spell_slots(),
+            5 => self.get_level_5_spell_slots(),
+            6 => self.get_level_6_spell_slots(),
+            _ => 0,
+        }
+    }
+    pub fn set_remaining_spell_slots(&mut self, spell_slot_level: i16, new_count: i16) {
+        match spell_slot_level {
+            1 => self.set_level_1_spell_slots(new_count),
+            2 => self.set_level_2_spell_slots(new_count),
+            3 => self.set_level_3_spell_slots(new_count),
+            4 => self.set_level_4_spell_slots(new_count),
+            5 => self.set_level_5_spell_slots(new_count),
+            6 => self.set_level_6_spell_slots(new_count),
+            _ => (),
         }
     }
 }
