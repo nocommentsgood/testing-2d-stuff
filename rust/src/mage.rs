@@ -1,9 +1,13 @@
 use crate::enums::player_char_enums::{
     character_control_state_machine::CharacterState, playable_variables::PlayableCharVariables,
 };
+use crate::singletons::action_manager::ActionManager;
+use crate::traits::characters::playable_character::PlayablePointer;
+use crate::traits::delete_me::DeleteMe;
 use crate::traits::{
     characters::playable_character::Playable, damageable::Damageable, health::Health,
 };
+use godot::obj::NewAlloc;
 use godot::{
     engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, InputEvent},
     prelude::*,
@@ -23,6 +27,7 @@ pub struct Mage {
 
     // TODO: this is just for testing
     health: u16,
+    manager: Option<Gd<DeleteMe>>,
 
     state: CharacterState,
     base: Base<CharacterBody2D>,
@@ -37,9 +42,16 @@ impl ICharacterBody2D for Mage {
             movement_left: 500.0,
             target: Vector2::ZERO,
             health: 100,
+            manager: None,
             state: CharacterState::DEFAULT,
             base,
         }
+    }
+
+    fn ready(&mut self) {
+        self.manager = Some(Gd::from_object(
+            crate::traits::delete_me::DeleteMe::default(),
+        ));
     }
 
     fn unhandled_input(&mut self, event: Gd<InputEvent>) {
@@ -65,6 +77,10 @@ impl Mage {
     #[func]
     fn on_spellbutton_pressed(&mut self, toggled: bool, skill_index: i16) {
         self.cast_spell_action(toggled, skill_index);
+
+        // if let Some(man) = self.manager {
+        //     man.bind().p();
+        // }
     }
 
     #[func]
@@ -90,19 +106,19 @@ impl Mage {
         self.state = CharacterState::DEFAULT
     }
 
-    #[func]
-    fn get_health(&mut self) {
-        godot_print!("emitting health signal from mage");
-        self.request_health();
-    }
-
     #[signal]
     fn character_variable_request(resource_type: PlayableCharVariables);
 
-    #[func]
-    fn request_health(&mut self) {
-        self.request_character_variable(PlayableCharVariables::HEALTH);
-    }
+    // #[func]
+    // fn get_health(&mut self) {
+    //     godot_print!("emitting health signal from mage");
+    //     self.request_health();
+    // }
+
+    // #[func]
+    // fn request_health(&mut self) {
+    //     self.request_character_variable(PlayableCharVariables::HEALTH);
+    // }
 
     #[func]
     fn set_state_to_turn_based(&mut self) {
@@ -116,16 +132,6 @@ impl Mage {
 }
 
 impl Playable for Mage {
-    fn request_character_variable(
-        &mut self,
-        variable: crate::enums::player_char_enums::playable_variables::PlayableCharVariables,
-    ) {
-        self.base_mut().emit_signal(
-            "character_variable_request".into(),
-            &[variable.to_variant()],
-        );
-    }
-
     fn move_to_target(&mut self, target: Vector2) {
         let velocity = self.base().get_position().direction_to(self.target) * self.speed;
         let mut animated_sprite = self
@@ -192,13 +198,25 @@ impl Playable for Mage {
     }
 }
 
+impl PlayablePointer for Gd<Mage> {
+    fn request_character_variable(
+        &mut self,
+        variable: crate::enums::player_char_enums::playable_variables::PlayableCharVariables,
+    ) {
+        self.bind_mut().base_mut().emit_signal(
+            "character_variable_request".into(),
+            &[variable.to_variant()],
+        );
+    }
+}
+
 impl Health for Gd<Mage> {
     fn health(&self) -> u16 {
         self.bind().health
     }
 
     fn restore_health(&mut self, amount: u16) {
-        todo!()
+        self.bind_mut().health += amount;
     }
 }
 

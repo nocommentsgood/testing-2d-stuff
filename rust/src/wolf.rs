@@ -1,14 +1,22 @@
 use godot::{
-    engine::{CharacterBody2D, ICharacterBody2D},
+    engine::{Area2D, CharacterBody2D, ICharacterBody2D},
     prelude::*,
 };
 
-use crate::traits::{damageable::Damageable, health::Health};
+use crate::traits::{
+    characters::{
+        npc::{self, Npc},
+        playable_character::Playable,
+    },
+    damageable::Damageable,
+    health::Health,
+};
 
 #[derive(GodotClass)]
 #[class(base=CharacterBody2D)]
 pub struct Wolf {
     speed: real,
+    hostile: bool,
     #[export]
     health: u16,
     screen_size: Vector2,
@@ -20,6 +28,7 @@ impl ICharacterBody2D for Wolf {
     fn init(base: Base<CharacterBody2D>) -> Self {
         Self {
             speed: 200.0,
+            hostile: true,
             health: 100,
             screen_size: Vector2::ZERO,
             base,
@@ -115,3 +124,18 @@ impl Damageable for Gd<Wolf> {
         todo!()
     }
 }
+
+// impl Npc for Gd<Wolf> {
+//     fn is_hostile(&self) -> bool {
+//         self.bind().hostile
+//     }
+//
+//     fn player_entered_hostile_range(&mut self) {
+//         let range = self.bind().base().get_node_as::<Area2D>("HostileRangeArea");
+//         let bodies = range.get_overlapping_bodies();
+//
+//         for body in bodies.iter_shared() {
+//             if let Ok(b) = body.try_cast::<&dyn Playable>() {}
+//         }
+//     }
+// }
