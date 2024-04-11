@@ -16,17 +16,17 @@ pub struct GameStateManager {
 
 #[godot_api]
 impl INode for GameStateManager {
-    fn input(&mut self, event: Gd<InputEvent>) {
-        if event.is_action_pressed("enter_turn_based".into()) {
-            if self.is_state_default {
-                self.set_gamestate_to_turn_based();
-                self.is_state_default = false;
-            } else {
-                self.set_gamestate_to_default();
-                self.is_state_default = true;
-            }
-        }
-    }
+    //     fn input(&mut self, event: Gd<InputEvent>) {
+    //         if event.is_action_pressed("enter_turn_based".into()) {
+    //             if self.is_state_default {
+    //                 self.set_gamestate_to_turn_based();
+    //                 self.is_state_default = false;
+    //             } else {
+    //                 self.set_gamestate_to_default();
+    //                 self.is_state_default = true;
+    //             }
+    //         }
+    //     }
 
     fn ready(&mut self) {
         self.is_state_default = true;

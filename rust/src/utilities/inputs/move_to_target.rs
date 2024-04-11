@@ -6,10 +6,10 @@ use crate::traits::{
 
 #[derive(GodotClass)]
 #[class(init)]
-pub struct EnterTurnBasedCommand;
+pub struct MoveToTarget;
 
-impl Command for EnterTurnBasedCommand {
+impl Command for MoveToTarget {
     fn execute(&mut self, actor: &mut dyn Playable) {
-        actor.set_state_to_turn_based();
+        actor.move_to_target();
     }
 }
