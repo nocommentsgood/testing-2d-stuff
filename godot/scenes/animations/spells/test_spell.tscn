@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bi1v78oplk67n"]
+[gd_scene load_steps=13 format=3 uid="uid://bi1v78oplk67n"]
 
 [ext_resource type="Texture2D" uid="uid://bbeyrset5ws2y" path="res://Red Effect Bullet Impact Explosion 32x32.png" id="1_6cpy0"]
 
@@ -77,8 +77,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_8it0l"]
 radius = 100.0
 
+[sub_resource type="CanvasTexture" id="CanvasTexture_3ex7h"]
+
 [node name="TestSpell" type="TestSpell"]
-position = Vector2(32, 0)
 collision_layer = 9
 collision_mask = 15
 monitorable = false
@@ -91,3 +92,12 @@ animation = &"moving"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_8it0l")
 debug_color = Color(0.752941, 0, 0.0470588, 0.419608)
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(157, 40)
+collide_with_areas = true
+
+[node name="Line2D" type="Line2D" parent="RayCast2D"]
+points = PackedVector2Array(0, 0, 100, 50)
+width = 3.0
+texture = SubResource("CanvasTexture_3ex7h")

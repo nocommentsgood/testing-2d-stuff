@@ -4,7 +4,9 @@ use crate::{
     wolf::Wolf,
 };
 use godot::{
-    engine::{AnimatedSprite2D, Area2D, IArea2D, InputEvent},
+    engine::{
+        AnimatedSprite2D, Area2D, IArea2D, InputEvent, InputEventMouseMotion, Line2D, RayCast2D,
+    },
     prelude::*,
 };
 
@@ -38,6 +40,7 @@ impl IArea2D for TestSpell {
 
     fn ready(&mut self) {
         self.base_mut().set_physics_process(false);
+        self.base_mut().set_process(true);
         let mut anim = self.base_mut().get_node_as::<AnimatedSprite2D>("Fireball");
         anim.set_animation("moving".into());
         anim.play();
@@ -53,6 +56,8 @@ impl IArea2D for TestSpell {
             if distance > self.max_distance {
                 godot_print!("CANNOT CAST THAT FAR");
             } else {
+                self.base_mut().set_process(false);
+
                 let mut timer = self
                     .base()
                     .get_tree()
@@ -68,6 +73,11 @@ impl IArea2D for TestSpell {
                 viewport.set_input_as_handled();
             }
         }
+    }
+
+    fn process(&mut self, delta: f64) {
+        godot_print!("process is running");
+        self.move_raycast_with_mouse();
     }
 
     fn physics_process(&mut self, delta: f64) {

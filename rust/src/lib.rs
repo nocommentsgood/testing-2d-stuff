@@ -1,5 +1,6 @@
 mod button;
 mod resources;
+pub mod skill_distance_line;
 pub mod traits {
     pub mod characters;
     pub mod damageable;
