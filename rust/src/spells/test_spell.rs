@@ -77,7 +77,6 @@ impl IArea2D for TestSpell {
 
     fn process(&mut self, delta: f64) {
         godot_print!("process is running");
-        self.move_raycast_with_mouse();
     }
 
     fn physics_process(&mut self, delta: f64) {
