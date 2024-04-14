@@ -1,4 +1,5 @@
 mod button;
+pub mod components;
 mod resources;
 pub mod skill_distance_line;
 pub mod traits {

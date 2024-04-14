@@ -21,6 +21,8 @@ pub struct Mage {
     #[var]
     target: Vector2,
 
+    skill_component: Option<Box<Gd<
+
     // TODO: this is just for testing
     health: u16,
 

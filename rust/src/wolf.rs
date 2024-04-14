@@ -3,7 +3,9 @@ use godot::{
     prelude::*,
 };
 
-use crate::traits::{damageable::Damageable, health::Health};
+use crate::traits::{
+    characters::playable_character::Playable, damageable::Damageable, health::Health,
+};
 
 #[derive(GodotClass)]
 #[class(base=CharacterBody2D)]
@@ -112,6 +114,27 @@ impl Damageable for Gd<Wolf> {
     }
 
     fn t_damage(entity: &dyn crate::traits::health::Health) {
+        todo!()
+    }
+}
+
+impl Playable for Wolf {
+    fn request_character_variable(
+        &mut self,
+        variable: crate::enums::player_char_enums::playable_variables::PlayableCharVariables,
+    ) {
+        todo!()
+    }
+
+    fn move_to_target(&mut self, target: Vector2) {
+        todo!()
+    }
+
+    fn turn_based_move_to_target(&mut self, target: Vector2) {
+        todo!()
+    }
+
+    fn set_state_to_turn_based(&mut self) {
         todo!()
     }
 }
