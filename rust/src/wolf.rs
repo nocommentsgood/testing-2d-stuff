@@ -4,7 +4,7 @@ use godot::{
 };
 
 use crate::traits::{
-    characters::playable_character::Playable, damageable::Damageable, health::Health,
+    characters::playable_character::PlayerControllable, damageable::Damageable, health::Health,
 };
 
 #[derive(GodotClass)]
@@ -118,14 +118,7 @@ impl Damageable for Gd<Wolf> {
     }
 }
 
-impl Playable for Wolf {
-    fn request_character_variable(
-        &mut self,
-        variable: crate::enums::player_char_enums::playable_variables::PlayableCharVariables,
-    ) {
-        todo!()
-    }
-
+impl PlayerControllable for Wolf {
     fn move_to_target(&mut self, target: Vector2) {
         todo!()
     }

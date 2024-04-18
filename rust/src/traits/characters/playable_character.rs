@@ -1,9 +1,6 @@
-use crate::enums::player_char_enums::playable_variables::PlayableCharVariables;
-use godot::{engine::ICharacterBody2D, prelude::*};
+use godot::builtin::Vector2;
 
-pub trait Playable: ICharacterBody2D {
-    fn request_character_variable(&mut self, variable: PlayableCharVariables);
-
+pub trait PlayerControllable {
     fn move_to_target(&mut self, target: Vector2);
 
     fn turn_based_move_to_target(&mut self, target: Vector2);

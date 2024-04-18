@@ -1,8 +1,9 @@
 use crate::enums::player_char_enums::{
     character_control_state_machine::CharacterState, playable_variables::PlayableCharVariables,
 };
+use crate::resources::player_vars::PlayerVariableResource;
 use crate::traits::{
-    characters::playable_character::Playable, damageable::Damageable, health::Health,
+    characters::playable_character::PlayerControllable, damageable::Damageable, health::Health,
 };
 use godot::{
     engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, InputEvent},
@@ -21,7 +22,7 @@ pub struct Mage {
     #[var]
     target: Vector2,
 
-    skill_component: Option<Box<Gd<
+    skill_component: Gd<PlayerVariableResource>,
 
     // TODO: this is just for testing
     health: u16,
@@ -38,6 +39,7 @@ impl ICharacterBody2D for Mage {
             max_movement_per_turn: 500.0,
             movement_left: 500.0,
             target: Vector2::ZERO,
+            skill_component: PlayerVariableResource::new_gd(),
             health: 100,
             state: CharacterState::DEFAULT,
             base,
@@ -117,17 +119,7 @@ impl Mage {
     }
 }
 
-impl Playable for Mage {
-    fn request_character_variable(
-        &mut self,
-        variable: crate::enums::player_char_enums::playable_variables::PlayableCharVariables,
-    ) {
-        self.base_mut().emit_signal(
-            "character_variable_request".into(),
-            &[variable.to_variant()],
-        );
-    }
-
+impl PlayerControllable for Mage {
     fn move_to_target(&mut self, target: Vector2) {
         let velocity = self.base().get_position().direction_to(self.target) * self.speed;
         let mut animated_sprite = self

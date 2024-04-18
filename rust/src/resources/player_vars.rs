@@ -1,6 +1,9 @@
 use godot::prelude::*;
 
-use crate::enums::player_char_enums::skills::PlayerSkills;
+use crate::{
+    enums::player_char_enums::skills::PlayerSkills,
+    traits::characters::character_variables::PlayerVariables,
+};
 
 #[derive(GodotClass)]
 #[class(base = Resource)]
@@ -110,5 +113,15 @@ impl PlayerVariableResource {
             6 => self.set_level_6_spell_slots(new_count),
             _ => (),
         }
+    }
+}
+
+impl PlayerVariables for PlayerVariableResource {
+    fn get_skills(&mut self) -> Vec<PlayerSkills> {
+        todo!()
+    }
+
+    fn get_variable_resource(&mut self) -> &PlayerVariableResource {
+        todo!()
     }
 }
