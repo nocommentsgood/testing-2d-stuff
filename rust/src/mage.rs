@@ -95,20 +95,6 @@ impl Mage {
     }
 
     #[func]
-    fn get_health(&mut self) {
-        godot_print!("emitting health signal from mage");
-        self.request_health();
-    }
-
-    #[signal]
-    fn character_variable_request(resource_type: PlayableCharVariables);
-
-    #[func]
-    fn request_health(&mut self) {
-        self.request_character_variable(PlayableCharVariables::HEALTH);
-    }
-
-    #[func]
     fn set_state_to_turn_based(&mut self) {
         self.state = CharacterState::TURN_BASED;
     }

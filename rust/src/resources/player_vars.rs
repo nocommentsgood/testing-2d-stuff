@@ -117,11 +117,11 @@ impl PlayerVariableResource {
 }
 
 impl PlayerVariables for PlayerVariableResource {
-    fn get_skills(&mut self) -> Vec<PlayerSkills> {
+    fn get_skills(&mut self) -> Dictionary {
         todo!()
     }
 
-    fn get_variable_resource(&mut self) -> &PlayerVariableResource {
+    fn get_variable_resource(&self) -> &PlayerVariableResource {
         todo!()
     }
 }

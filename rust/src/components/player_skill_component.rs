@@ -1,6 +1,9 @@
-use godot::prelude::*;
+use std::{borrow::BorrowMut, ops::DerefMut};
+
+use godot::{obj::WithBaseField, prelude::*};
 
 use crate::{
+    enums::player_char_enums::skills::PlayerSkills,
     resources::player_vars::PlayerVariableResource,
     traits::characters::{
         character_variables::PlayerVariables, playable_character::PlayerControllable,
@@ -18,8 +21,15 @@ pub struct PlayerSkillComponent {
 
 #[godot_api]
 impl PlayerSkillComponent {
-    pub fn cast_player_skill(&mut self, actor: Box<dyn PlayerVariables>) {
-        let h = self.player_vars.bind().get_active_skills();
+    pub fn try_cast_player_skill<P>(&mut self, mut actor: Box<Gd<P>>, index: i32)
+    where
+        P: Inherits<Node>,
+    {
+        let skills = self.player_vars.bind().get_active_skills();
+        let skill_variant = skills.get(index);
+        let x = skill_variant.unwrap().to::<PlayerSkills>();
+        let skill_instance = PlayerSkills::load_skill(&x).unwrap();
+        actor.upcast_mut().add_child(skill_instance);
     }
 }
 
@@ -36,7 +46,7 @@ impl PlayerVariables for PlayerSkillComponent {
         self.player_vars.bind().get_active_skills()
     }
 
-    fn get_variable_resource(&mut self) -> &PlayerVariableResource {
-        &self.player_vars.bind()
+    fn get_variable_resource(&self) -> &PlayerVariableResource {
+        todo!();
     }
 }

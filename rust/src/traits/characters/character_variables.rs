@@ -7,5 +7,5 @@ use crate::{
 pub trait PlayerVariables {
     fn get_skills(&mut self) -> Dictionary;
 
-    fn get_variable_resource(&mut self) -> &PlayerVariableResource;
+    fn get_variable_resource(&self) -> &PlayerVariableResource;
 }
