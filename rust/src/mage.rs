@@ -1,3 +1,4 @@
+use crate::components::player_skill_component::PlayerSkillComponent;
 use crate::enums::player_char_enums::{
     character_control_state_machine::CharacterState, playable_variables::PlayableCharVariables,
 };
@@ -5,6 +6,7 @@ use crate::resources::player_vars::PlayerVariableResource;
 use crate::traits::{
     characters::playable_character::PlayerControllable, damageable::Damageable, health::Health,
 };
+use godot::obj::WithBaseField;
 use godot::{
     engine::{AnimatedSprite2D, CharacterBody2D, ICharacterBody2D, InputEvent},
     prelude::*,
@@ -22,7 +24,7 @@ pub struct Mage {
     #[var]
     target: Vector2,
 
-    skill_component: Gd<PlayerVariableResource>,
+    skill_component: PlayerSkillComponent,
 
     // TODO: this is just for testing
     health: u16,
@@ -39,7 +41,7 @@ impl ICharacterBody2D for Mage {
             max_movement_per_turn: 500.0,
             movement_left: 500.0,
             target: Vector2::ZERO,
-            skill_component: PlayerVariableResource::new_gd(),
+            skill_component: PlayerSkillComponent::new(),
             health: 100,
             state: CharacterState::DEFAULT,
             base,
@@ -75,12 +77,8 @@ impl Mage {
     pub fn cast_spell_action(&mut self, toggled: bool, skill_index: i16) {
         if toggled {
             self.state = CharacterState::CASTING_SPELL;
-            let path = self.base().get_path();
-
-            self.base_mut().emit_signal(
-                "player_requests_skill_action".into(),
-                &[skill_index.to_variant(), path.to_variant()],
-            );
+            self.skill_component
+                .try_cast_player_skill(self.to_gd(), skill_index)
         } else {
             self.state = CharacterState::DEFAULT
         }

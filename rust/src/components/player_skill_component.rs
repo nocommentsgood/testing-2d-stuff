@@ -1,6 +1,9 @@
 use std::{borrow::BorrowMut, ops::DerefMut};
 
-use godot::{obj::WithBaseField, prelude::*};
+use godot::{
+    obj::{NewGd, WithBaseField},
+    prelude::*,
+};
 
 use crate::{
     enums::player_char_enums::skills::PlayerSkills,
@@ -14,14 +17,19 @@ use crate::{
 /// Inject into a playable character to provide functions for using skills
 
 #[derive(GodotClass)]
-#[class(init)]
+#[class(no_init)]
 pub struct PlayerSkillComponent {
     player_vars: Gd<PlayerVariableResource>,
 }
 
 #[godot_api]
 impl PlayerSkillComponent {
-    pub fn try_cast_player_skill<P>(&mut self, mut actor: Box<Gd<P>>, index: i32)
+    pub fn new() -> Self {
+        Self {
+            player_vars: PlayerVariableResource::new_gd(),
+        }
+    }
+    pub fn try_cast_player_skill<P>(&mut self, mut actor: Gd<P>, index: i16)
     where
         P: Inherits<Node>,
     {
